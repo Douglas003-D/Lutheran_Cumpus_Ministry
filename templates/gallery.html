@@ -1,0 +1,343 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+    /* --- Gallery Technical Hub Theme --- */
+    .hub-container {
+        padding: 80px 10%;
+        background: #f8fafc;
+        min-height: 100vh;
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* --- Search Filter Controls --- */
+    .search-filter-wrapper {
+        max-width: 600px;
+        margin: 0 auto 60px;
+        position: relative;
+    }
+
+    .category-search-input {
+        width: 100%;
+        padding: 18px 30px;
+        padding-right: 60px;
+        border-radius: 50px;
+        border: 2px solid #e2e8f0;
+        background: white;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #0f172a;
+        transition: all 0.3s ease;
+        outline: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    }
+
+    .category-search-input:focus {
+        border-color: #14b8a6;
+        box-shadow: 0 15px 30px rgba(20, 184, 166, 0.1);
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 25px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #14b8a6;
+        font-size: 1.2rem;
+    }
+
+    /* --- Responsive Grid --- */
+    .gallery-grid {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 35px;
+        margin-bottom: 80px;
+    }
+
+    /* --- Mega Bold Gallery Cards --- */
+    .gallery-card {
+        background: white;
+        border-radius: 24px;
+        overflow: hidden;
+        border: 1px solid #e2e8f0;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        opacity: 1;
+    }
+
+    .gallery-card.hidden {
+        display: none;
+    }
+
+    .gallery-card:hover {
+        transform: translateY(-12px) scale(1.02);
+        border-color: #14b8a6;
+        box-shadow: 0 25px 50px rgba(15, 23, 42, 0.1);
+    }
+
+    .image-wrapper {
+        position: relative;
+        height: 240px;
+        overflow: hidden;
+    }
+
+    .gallery-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .gallery-card:hover .gallery-img {
+        transform: scale(1.1);
+    }
+
+    .card-body {
+        padding: 25px;
+        background: white;
+    }
+
+    .gallery-title {
+        margin: 0;
+        font-size: 1.3rem;
+        font-weight: 900;
+        color: #0f172a;
+        letter-spacing: -0.5px;
+    }
+
+    .gallery-category {
+        font-size: 0.75rem;
+        padding: 6px 14px;
+        border-radius: 10px;
+        background: #f0fdfa;
+        color: #0d9488;
+        font-weight: 900;
+        border: 2px solid #ccfbf1;
+        text-transform: uppercase;
+        display: inline-block;
+        margin-bottom: 12px;
+    }
+
+    .view-prompt {
+        color: #14b8a6;
+        font-weight: 800;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #f1f5f9;
+    }
+
+    /* --- Lightbox Popup Styling --- */
+    #lightbox {
+        display: none;
+        position: fixed;
+        z-index: 10000;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.98);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    #lightbox-img {
+        max-width: 90%;
+        max-height: 70vh;
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .lb-controls {
+        margin-top: 25px;
+        text-align: center;
+        color: white;
+    }
+
+    .close-lb {
+        position: absolute;
+        top: 25px;
+        right: 35px;
+        color: white;
+        font-size: 3rem;
+        cursor: pointer;
+        line-height: 1;
+    }
+
+    .lb-dl-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: #14b8a6;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 800;
+        margin-top: 15px;
+        transition: 0.3s;
+    }
+
+    .lb-dl-btn:hover { background: white; color: #14b8a6; }
+
+    /* --- Mega Footer Styling --- */
+    .mega-footer {
+        background: #0f172a;
+        color: #f8fafc;
+        padding: 80px 10% 40px;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 50px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .footer-col h4 {
+        color: #14b8a6;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 25px;
+        font-size: 1.1rem;
+    }
+
+    .footer-col p, .footer-col ul {
+        color: #94a3b8;
+        list-style: none;
+        padding: 0;
+    }
+
+    .footer-col ul li { margin-bottom: 15px; }
+    .footer-col ul li a { color: #94a3b8; text-decoration: none; transition: 0.3s; font-weight: 500; }
+    .footer-col ul li a:hover { color: #14b8a6; padding-left: 5px; }
+
+    .social-links { display: flex; gap: 15px; margin-top: 25px; }
+    .social-icon {
+        background: #1e293b; color: white; width: 40px; height: 40px; border-radius: 10px;
+        display: flex; align-items: center; justify-content: center; transition: 0.3s; text-decoration: none;
+    }
+    .social-icon:hover { background: #14b8a6; transform: translateY(-5px); }
+</style>
+<div class="gallery-grid triple-lock-row">
+   </div>
+
+<div class="hub-container">
+    <div style="max-width: 900px; margin: 0 auto; text-align: center; margin-bottom: 60px;">
+        <span style="color: #14b8a6; font-weight: 900; letter-spacing: 3px; font-size: 0.9rem; text-transform: uppercase;">Visual Archive</span>
+        <h1 style="font-size: 3.5rem; margin-top: 15px; font-weight: 900; color: #0f172a; letter-spacing: -2px;">Ministry Gallery</h1>
+        <p style="color: #64748b; font-size: 1.2rem; max-width: 600px; margin: 20px auto; line-height: 1.6;">
+            Capturing moments of grace, community, and service within the LCM Maseno family.
+        </p>
+    </div>
+
+    <div class="search-filter-wrapper">
+        <input type="text" 
+               id="categorySearch" 
+               class="category-search-input" 
+               placeholder="Search by category (e.g. Youth, Choir, Outreach)..."
+               onkeyup="filterByCategory()">
+        <i class="fas fa-search search-icon"></i>
+    </div>
+
+    <div class="gallery-grid" id="mainGalleryGrid">
+        {% for image in images %}
+        <div class="gallery-card" 
+             data-category="{{ (image.category or '') | lower }}"
+             onclick="openGallery(this)"
+             data-img="{{ url_for('static', filename='uploads/' + image.image_path) }}"
+             data-title="{{ (image.title or '') | replace("'", "\\'") }}"
+             data-file="{{ image.image_path }}">
+             
+            <div class="image-wrapper">
+                <img src="{{ url_for('static', filename='uploads/' + image.image_path) }}" class="gallery-img" alt="{{ image.title }}">
+            </div>
+            
+            <div class="card-body">
+                {% if image.category and image.category.strip() != "" %}
+                    <span class="gallery-category">{{ image.category }}</span>
+                {% endif %}
+
+                <h3 class="gallery-title">
+                    {{ image.title if image.title and image.title.strip() != "" else "Ministry Highlight" }}
+                </h3>
+                
+                <div class="view-prompt">Full View <span>→</span></div>
+            </div>
+        </div>
+        {% else %}
+        <div style="grid-column: 1/-1; text-align: center; padding: 100px;">
+            <p style="color: #94a3b8; font-weight: 600;">The gallery is currently being curated. Check back soon!</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div id="lightbox" onclick="closeGallery(event)">
+    <span class="close-lb">&times;</span>
+    <img id="lightbox-img" src="">
+    <div class="lb-controls">
+        <h3 id="lb-title" style="margin: 0; font-size: 1.5rem; font-weight: 900;"></h3>
+        <a id="lb-dl" href="#" class="lb-dl-btn">
+            <i class="fas fa-download"></i> Download Photo
+        </a>
+    </div>
+</div>
+
+
+<script>
+    // LIVE SEARCH FILTERING LOGIC
+    function filterByCategory() {
+        const query = document.getElementById('categorySearch').value.toLowerCase();
+        const cards = document.querySelectorAll('.gallery-card');
+        
+        cards.forEach(card => {
+            const category = card.getAttribute('data-category');
+            
+            // If the typed query is found within the category string
+            if (category.includes(query)) {
+                card.classList.remove('hidden');
+                // Optional: Fade in effect
+                card.style.opacity = "1";
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+    }
+
+    function openGallery(element) {
+        const imgSrc = element.getAttribute('data-img');
+        const title = element.getAttribute('data-title');
+        const filename = element.getAttribute('data-file');
+
+        document.getElementById('lightbox-img').src = imgSrc;
+        const displayTitle = (title && title !== 'None' && title !== '') ? title : "Gallery View";
+        document.getElementById('lb-title').innerText = displayTitle;
+        
+        document.getElementById('lb-dl').href = "/download_photo/" + filename;
+        document.getElementById('lightbox').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeGallery(e) {
+        if (e.target.id === 'lightbox' || e.target.className === 'close-lb') {
+            document.getElementById('lightbox').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+</script>
+
+{% endblock %}

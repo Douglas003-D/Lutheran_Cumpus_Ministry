@@ -1,0 +1,172 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+    .setup-card {
+        max-width: 450px;
+        width: 100%;
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        border-top: 6px solid #28a745;
+        animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .setup-icon-box {
+        background: rgba(40, 167, 69, 0.1);
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #475569;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 14px;
+        border-radius: 10px;
+        border: 1px solid #e2e8f0;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #28a745;
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.1);
+    }
+
+    .btn-setup {
+        width: 100%;
+        background: #28a745;
+        color: white;
+        padding: 18px;
+        font-size: 1.15rem;
+        font-weight: 700;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 10px 15px -3px rgba(40, 167, 69, 0.3);
+    }
+
+    .btn-setup:hover {
+        background: #218838;
+        transform: translateY(-3px);
+        box-shadow: 0 20px 25px -5px rgba(40, 167, 69, 0.4);
+    }
+
+    .info-alert {
+        background: #f0fdf4;
+        border-left: 4px solid #22c55e;
+        padding: 12px;
+        margin-bottom: 25px;
+        font-size: 0.85rem;
+        color: #166534;
+        border-radius: 4px;
+    }
+
+    .token-label {
+        color: #1e293b;
+        font-weight: 700;
+    }
+
+    .password-hint {
+        font-size: 0.75rem;
+        color: #64748b;
+        margin-top: 6px;
+        line-height: 1.4;
+    }
+</style>
+
+<div style="min-height: 90vh; display: flex; align-items: center; justify-content: center; background: #f1f5f9; padding: 20px;">
+    <div class="setup-card">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <div class="setup-icon-box">
+                <i class="fas fa-user-shield" style="font-size: 2.5rem; color: #28a745;"></i>
+            </div>
+            <h2 style="color: #0f172a; font-weight: 800; margin: 0; font-size: 1.75rem;">Admin Initialization</h2>
+            <p style="color: #64748b; margin-top: 10px; font-size: 0.95rem;">No admin detected. Configure account and verify with your setup token.</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert" style="margin-bottom: 20px; padding: 15px; border-radius: 10px;">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="info-alert">
+            <i class="fas fa-info-circle"></i> <strong>Note:</strong> This page is only accessible when the system has no administrators.
+        </div>
+
+        <form action="{{ url_for('admin_setup') }}" method="POST">
+            <div style="margin-bottom: 15px;">
+                <label class="form-label">Username</label>
+                <input type="text" name="username" class="form-control" autocomplete="off" required>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label class="form-label">Email Address</label>
+                <input type="email" name="email" class="form-control" autocomplete="off" required>
+            </div>
+
+           <div style="margin-bottom: 15px; padding: 15px; background: #f8fafc; border-radius: 10px; border: 1px dashed #cbd5e1;">
+                <label class="form-label token-label"><i class="fas fa-key text-warning"></i> Secret Setup Token</label>
+                <input type="password" 
+                       name="setup_token" 
+                       class="form-control" 
+                       autocomplete="one-time-code" 
+                       placeholder="Enter master token"
+                       required>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label class="form-label">Password</label>
+                <input type="password" 
+                       name="password" 
+                       class="form-control" 
+                       required 
+                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}"
+                       title="Must contain at least 8 characters, including uppercase, lowercase, number, and symbol.">
+                <div class="password-hint">
+                    <i class="fas fa-shield-alt"></i> Use 8+ characters with uppercase, numbers, and symbols.
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <label class="form-label">Confirm Password</label>
+                <input type="password" name="confirm_password" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn-setup">
+                Initialize System
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 25px; border-top: 1px solid #f1f5f9; padding-top: 20px;">
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,142 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+    /* --- 1. HERO & MARQUEE --- */
+    .hero-section {
+        width: 100%; height: 90vh; 
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("{{ url_for('static', filename='images/hero.jpg') }}"); 
+        background-size: cover; background-position: center; display: flex; 
+        flex-direction: column; align-items: center; justify-content: flex-start; 
+        font-family: 'Inter', sans-serif; position: relative; overflow: hidden;
+    }
+
+    .marquee-bar {
+        width: 100%; background: rgba(26, 42, 108, 0.9); color: #ffffff; padding: 18px 0;
+        font-weight: 800; border-bottom: 4px solid #2ecc71; overflow: hidden; white-space: nowrap;
+        text-transform: uppercase; letter-spacing: 1px; margin-bottom: 80px;
+    }
+
+    .marquee-content { display: inline-block; padding-left: 100%; animation: scroll-marquee 20s linear infinite; }
+    @keyframes scroll-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+    .hero-content { text-align: center; color: white; display: flex; flex-direction: column; align-items: center; width: 100%; }
+    .hero-content h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); margin: 0; font-weight: 800; text-transform: uppercase; text-shadow: 3px 3px 20px rgba(0,0,0,0.7); }
+
+    /* --- 2. LOCKED BUTTONS (THE FIX) --- */
+    .hero-btn-row {
+        display: flex !important;
+        flex-direction: row !important; /* Force side-by-side */
+        flex-wrap: nowrap !important;   /* Never drop to next line */
+        justify-content: center !important;
+        gap: clamp(10px, 3vw, 20px) !important; /* Spacing shrinks on mobile */
+        width: 100%;
+        margin-top: 40px;
+        padding: 0 10px;
+    }
+
+    .pill-btn-locked {
+        background: #5d6cbd;
+        color: #fff;
+        border: 3px solid rgba(255, 255, 255, 0.6);
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        white-space: nowrap; /* Keep text on one line */
+        
+        /* This makes them shrink to fit without breaking the row */
+        padding: 14px clamp(15px, 4vw, 36px); 
+        font-size: clamp(0.75rem, 2vw, 1.1rem);
+        flex-shrink: 1; 
+        min-width: 0; 
+    }
+
+    .pill-btn-locked:hover {
+        background: #fff; color: #000; transform: scale(1.05);
+    }
+
+    /* --- 3. LOCKED STATS BAR (THE FIX) --- */
+    .stats-bar {
+        background: #fff; 
+        display: flex !important; 
+        flex-direction: row !important; /* Force side-by-side */
+        flex-wrap: nowrap !important;   /* Never stack */
+        justify-content: space-around;
+        padding: 30px 10px; 
+        margin: -50px auto 0; 
+        position: relative; z-index: 10;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+        border-radius: 20px; 
+        width: 90%; max-width: 1100px;
+    }
+
+    .stat-item {
+        flex: 1; text-align: center; min-width: 0;
+    }
+
+    .stat-item h2 { 
+        color: #1a2a6c; 
+        margin: 0; 
+        font-weight: 900;
+        font-size: clamp(1.2rem, 5vw, 2.5rem); /* Numbers shrink on mobile */
+    }
+
+    .stat-item p { 
+        color: #64748b; 
+        font-weight: 700; 
+        text-transform: uppercase; 
+        margin: 0;
+        font-size: clamp(0.55rem, 1.5vw, 0.85rem); /* Labels shrink on mobile */
+        white-space: nowrap;
+    }
+
+    /* --- 4. SECTIONS --- */
+    .section-padding { padding: 100px 10%; text-align: center; }
+    .mission-tag { color: #2ecc71; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+    .section-title { color: #1a2a6c; font-size: 2.8rem; margin-top: 10px; font-weight: 800; }
+</style>
+
+<div class="hero-section">
+    <div class="marquee-bar">
+        <div class="marquee-content">
+            WELCOME TO LCM! GRACE, KNOWLEDGE AND STRENGTH • WELCOME TO LCM! GRACE, KNOWLEDGE AND STRENGTH •
+        </div>
+    </div>
+
+    <div class="hero-content">
+        <h1>LUTHERAN CAMPUS MINISTRY</h1>
+        <p style="font-size: 1.4rem; margin: 15px 0; font-weight: 300; font-style: italic;">
+            GRACE, KNOWLEDGE AND STRENGTH
+        </p>
+        
+        <div class="hero-btn-row">
+            <a href="{{ url_for('events') }}" class="pill-btn-locked">Join a Fellowship</a>
+            <a href="{{ url_for('donate') }}" class="pill-btn-locked">Give Online</a>
+        </div>
+    </div>
+</div>
+
+<div class="stats-bar">
+    <div class="stat-item"><h2>500+</h2><p>Students Impacted</p></div>
+    <div class="stat-item"><h2>12+</h2><p>Weekly Meetings</p></div>
+    <div class="stat-item"><h2>100%</h2><p>Grace Driven</p></div>
+</div>
+
+<section class="section-padding">
+    <h6 class="mission-tag">Our Mission</h6>
+    <h2 class="section-title">A Place to Belong</h2>
+    <p style="max-width: 800px; margin: 20px auto; line-height: 1.8; color: #475569; font-size: 1.1rem;">
+        Discover a community that walks with you through your university journey. From spiritual growth to lasting friendships, LCM is your home away from home.
+    </p>
+    <div style="margin-top: 40px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
+        <a href="{{ url_for('downloads') }}" style="color: #1a2a6c; font-weight: 700; text-decoration: none;">Get Resources →</a>
+        <a href="{{ url_for('about') }}" style="color: #1a2a6c; font-weight: 700; text-decoration: none;">Meet the Team →</a>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,137 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<style>
+    .registration-section {
+        padding: 80px 0;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        min-height: 85vh;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-container {
+        background: white;
+        padding: 45px;
+        border-radius: 24px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+        max-width: 520px;
+        margin: 0 auto;
+        width: 100%;
+        border: 1px solid #f1f5f9;
+    }
+
+    .btn-register-extra {
+        background: linear-gradient(45deg, #0f172a, #1e293b);
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 700;
+        padding: 18px; 
+        border-radius: 14px;
+        border: none;
+        width: 100%;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 25px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .btn-register-extra:hover {
+        background: linear-gradient(45deg, #14b8a6, #0d9488);
+        transform: scale(1.02);
+        box-shadow: 0 15px 30px rgba(20, 184, 166, 0.3);
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+    }
+
+    .form-control-custom {
+        width: 100%;
+        padding: 14px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #f8fafc;
+    }
+
+    .form-control-custom:focus {
+        outline: none;
+        border-color: #14b8a6;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.1);
+    }
+
+    .icon-box {
+        background: #0f172a;
+        width: 70px;
+        height: 70px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        transform: rotate(-5deg);
+    }
+</style>
+
+<div class="registration-section">
+    <div class="form-container">
+        <div style="text-align: center; margin-bottom: 35px;">
+            <div class="icon-box">
+                <i class="fas fa-graduation-cap" style="font-size: 2rem; color: #14b8a6;"></i>
+            </div>
+            <h2 style="color: #0f172a; font-weight: 800; margin: 0; font-size: 1.8rem; letter-spacing: -0.5px;">Alumni Registry</h2>
+            <p style="color: #64748b; margin-top: 8px;">Keep the connection alive after graduation</p>
+        </div>
+
+        <form action="{{ url_for('register_alumni') }}" method="POST">
+            <div class="form-group" style="margin-bottom: 18px;">
+                <label for="name"><i class="fas fa-user" style="color: #14b8a6; margin-right: 8px;"></i> Full Name</label>
+                <input type="text" id="name" name="name" class="form-control-custom" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 18px;">
+                <label for="email"><i class="fas fa-envelope" style="color: #14b8a6; margin-right: 8px;"></i> Email Address</label>
+                <input type="email" id="email" name="email" class="form-control-custom" placeholder="e.g. name@example.com" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 18px;">
+                <label for="grad_year"><i class="fas fa-calendar-alt" style="color: #14b8a6; margin-right: 8px;"></i> Year of Graduation</label>
+                <input type="number" id="grad_year" name="grad_year" class="form-control-custom" placeholder="e.g. 2024" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 18px;">
+                <label for="course"><i class="fas fa-book" style="color: #14b8a6; margin-right: 8px;"></i> Course Studied</label>
+                <input type="text" id="course" name="course" class="form-control-custom" placeholder="e.g. BSc. Information Technology" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 18px;">
+                <label for="profession"><i class="fas fa-briefcase" style="color: #14b8a6; margin-right: 8px;"></i> Current Profession</label>
+                <input type="text" id="profession" name="profession" class="form-control-custom" placeholder="e.g. Software Engineer">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 18px;">
+                <label for="location"><i class="fas fa-map-marker-alt" style="color: #14b8a6; margin-right: 8px;"></i> Current City/Location</label>
+                <input type="text" id="location" name="location" class="form-control-custom" placeholder="e.g. Nairobi, Kenya">
+            </div>
+
+            <button type="submit" class="btn-register-extra">
+                Join Alumni Network
+                <i class="fas fa-check-circle"></i>
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

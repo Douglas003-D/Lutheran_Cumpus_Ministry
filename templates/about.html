@@ -1,0 +1,183 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+    :root {
+        --lcm-teal: #14b8a6;
+        --campus-navy: #0f172a;
+        --slate-text: #64748b;
+    }
+
+    .about-wrapper {
+        padding: 80px 10%;
+        background: #ffffff;
+        font-family: 'Inter', sans-serif;
+        color: var(--campus-navy);
+    }
+
+    /* Hero Branding */
+    .campus-hero {
+        text-align: center;
+        margin-bottom: 100px;
+    }
+
+    .tagline {
+        color: var(--lcm-teal);
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.9rem;
+    }
+
+    .main-heading {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 900;
+        margin-top: 15px;
+        line-height: 1.1;
+        letter-spacing: -2px;
+    }
+
+    /* The "Four Pillars" of Campus Life */
+    .pillar-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin-bottom: 80px;
+    }
+
+    .pillar-box {
+        padding: 40px;
+        border-radius: 24px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+    }
+
+    .pillar-box:hover {
+        border-color: var(--lcm-teal);
+        background: #fff;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        transform: translateY(-5px);
+    }
+
+    .pillar-icon {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    /* Detailed Story Section */
+    .story-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+        margin-top: 100px;
+    }
+
+    @media (max-width: 900px) {
+        .story-grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+
+    .story-content h2 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin-bottom: 25px;
+    }
+
+    .story-content p {
+        font-size: 1.1rem;
+        color: var(--slate-text);
+        margin-bottom: 20px;
+        line-height: 1.8;
+    }
+
+    /* Decorative Tech-Bar */
+    .lcm-accent-bar {
+        width: 100px;
+        height: 6px;
+        background: var(--lcm-teal);
+        border-radius: 3px;
+        margin-bottom: 30px;
+    }
+</style>
+
+<div class="about-wrapper">
+    
+    <div class="campus-hero">
+        <span class="tagline">Lutheran Campus Ministry (LCM)</span>
+        <h1 class="main-heading">A Spiritual Home <br>in the Heart of the Campus.</h1>
+        <div style="max-width: 700px; margin: 30px auto;">
+            <p style="font-size: 1.25rem; color: var(--slate-text);">
+                We exist to walk alongside students as they navigate the complexities of university life, providing a foundation of faith, fellowship, and purpose.
+            </p>
+        </div>
+    </div>
+
+    <div class="pillar-container">
+        <div class="pillar-box">
+            <span class="pillar-icon">🙌</span>
+            <h3 style="font-weight: 800;">Worship & Word</h3>
+            <p style="color: var(--slate-text); font-size: 0.95rem;">Experience Christ-centered worship that speaks to the modern student's journey and academic mind.</p>
+        </div>
+        <div class="pillar-box">
+            <span class="pillar-icon">🤝</span>
+            <h3 style="font-weight: 800;">Fellowship</h3>
+            <p style="color: var(--slate-text); font-size: 0.95rem;">Building lifelong bonds through small groups, choir rehearsals, and shared campus experiences.</p>
+        </div>
+        <div class="pillar-box">
+            <span class="pillar-icon">🕯️</span>
+            <h3 style="font-weight: 800;">Discipleship</h3>
+            <p style="color: var(--slate-text); font-size: 0.95rem;">Equipping the next generation of leaders with a deep-rooted spiritual identity and moral clarity.</p>
+        </div>
+        <div class="pillar-box">
+            <span class="pillar-icon">🌍</span>
+            <h3 style="font-weight: 800;">Service</h3>
+            <p style="color: var(--slate-text); font-size: 0.95rem;">Extending our hands beyond the gates through community outreach and charitable missions.</p>
+        </div>
+    </div>
+
+    <div class="story-grid">
+        <div class="story-content">
+            <div class="lcm-accent-bar"></div>
+            <h2>Where Faith Meets the Classroom.</h2>
+            <p>
+                University life is a season of profound change. At LCM, we believe that your academic pursuit and your spiritual growth should go hand-in-hand. We provide a safe space for students to ask big questions, find community, and experience the grace of God.
+            </p>
+            <p>
+                Whether you are a first-year student finding your footing or a finalist preparing for the world of work, our ministry is a place where you belong. We are more than just a club; we are a family.
+            </p>
+            <div style="background: rgba(20, 184, 166, 0.05); padding: 25px; border-radius: 16px; border-left: 4px solid var(--lcm-teal);">
+                <em style="color: var(--campus-navy); font-weight: 600;">"Let no one despise your youth, but be an example to the believers in word, in conduct, in love, in spirit, in faith, in purity." — 1 Timothy 4:12</em>
+            </div>
+        </div>
+
+        <div style="background: var(--campus-navy); color: white; padding: 60px; border-radius: 40px; position: relative; overflow: hidden;">
+            <h3 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 20px;">Digital Connection</h3>
+            <p style="color: #94a3b8; line-height: 1.7; margin-bottom: 30px;">
+                Our platform is designed to keep the ministry connected across all campuses. Access academic resources, stay updated on event schedules, and support the ministry from anywhere.
+            </p>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                    <span style="color: var(--lcm-teal);">✔</span> Centralized Event Hub
+                </li>
+                <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                    <span style="color: var(--lcm-teal);">✔</span> Academic & Ministry Downloads
+                </li>
+                <li style="margin-bottom: 0; display: flex; align-items: center; gap: 10px;">
+                    <span style="color: var(--lcm-teal);">✔</span> Secure Digital Giving
+                </li>
+            </ul>
+            <div style="position: absolute; right: -20px; bottom: -20px; font-size: 10rem; opacity: 0.05;">⛪</div>
+        </div>
+    </div>
+
+    <div style="margin-top: 100px; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 60px;">
+        <h2 style="font-weight: 900; margin-bottom: 15px;">Ready to join our fellowship?</h2>
+        <p style="color: var(--slate-text); margin-bottom: 30px;">Check out our upcoming events or visit us during our weekly sessions.</p>
+        <a href="{{ url_for('events') }}" style="background: var(--lcm-teal); color: white; padding: 16px 40px; border-radius: 100px; text-decoration: none; font-weight: 700; display: inline-block;">View Upcoming Events</a>
+    </div>
+
+</div>
+
+{% endblock %}

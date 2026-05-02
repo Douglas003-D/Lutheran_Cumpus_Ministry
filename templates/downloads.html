@@ -1,0 +1,296 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+    /* --- Technical Hub Theme --- */
+    .hub-container {
+        padding: 80px 10%;
+        background: #f8fafc; /* Slightly lighter, cleaner background */
+        min-height: 100vh;
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* --- Mega Bold Search Bar --- */
+    .search-wrapper {
+        max-width: 600px;
+        margin: 0 auto 60px;
+        position: relative;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 20px 30px;
+        padding-right: 60px;
+        border-radius: 100px;
+        border: 3px solid #e2e8f0; /* Thicker border to match navbar */
+        background: white;
+        font-family: inherit;
+        font-size: 1.1rem;
+        font-weight: 600;
+        outline: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+    }
+
+    .search-input:focus {
+        border-color: #14b8a6;
+        box-shadow: 0 10px 30px rgba(20, 184, 166, 0.15);
+        transform: translateY(-2px);
+    }
+
+    /* --- Modern Grid Layout --- */
+    #fileGrid {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 35px;
+    }
+
+    /* --- Mega Bold Resource Cards --- */
+    .resource-card {
+        background: white;
+        border-radius: 24px;
+        padding: 35px;
+        border: 1px solid #e2e8f0;
+        /* Removed top-border-only for a cleaner all-around premium look */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        cursor: pointer;
+        position: relative;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    }
+
+    .resource-card:hover {
+        transform: translateY(-12px) scale(1.02);
+        border-color: #14b8a6;
+        box-shadow: 0 25px 50px rgba(15, 23, 42, 0.1);
+    }
+
+    /* --- Card Interior Elements --- */
+    .icon-box {
+        background: #f1f5f9; 
+        color: #14b8a6; 
+        width: 70px; 
+        height: 70px; 
+        border-radius: 20px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        font-size: 2rem;
+        margin-bottom: 25px;
+        transition: 0.3s ease;
+    }
+
+    .resource-card:hover .icon-box {
+        background: #14b8a6;
+        color: white;
+        transform: rotate(-5deg);
+    }
+
+    .card-title {
+        margin: 0; 
+        font-size: 1.4rem; /* Larger and Bolder */
+        font-weight: 900; 
+        color: #0f172a;
+        line-height: 1.2;
+        letter-spacing: -0.5px;
+    }
+
+    .card-meta {
+        margin: 8px 0 25px; 
+        font-size: 0.95rem; 
+        color: #64748b;
+        font-weight: 500;
+    }
+
+    .download-prompt {
+        color: #14b8a6; 
+        font-weight: 800; 
+        font-size: 1rem; 
+        display: flex; 
+        align-items: center; 
+        gap: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* --- Modal Styling --- */
+    .dl-modal {
+        display: none; 
+        position: fixed; 
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(12px);
+        z-index: 3000;
+        justify-content: center; 
+        align-items: center;
+        padding: 20px;
+    }
+
+    .dl-modal-content {
+        background: white;
+        color: #0f172a;
+        width: 100%;
+        max-width: 450px;
+        border-radius: 35px;
+        padding: 50px 40px;
+        text-align: center;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+        animation: modalEntrance 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes modalEntrance {
+        from { transform: translateY(30px) scale(0.9); opacity: 0; }
+        to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .modal-dl-btn {
+        display: block;
+        background: #14b8a6;
+        color: white;
+        text-decoration: none;
+        padding: 20px;
+        border-radius: 18px;
+        font-weight: 800;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 30px;
+        transition: 0.3s;
+        border: none;
+        width: 100%;
+        cursor: pointer;
+    }
+
+    .modal-dl-btn:hover {
+        background: #0d9488;
+        transform: scale(1.03);
+        box-shadow: 0 15px 30px rgba(20, 184, 166, 0.3);
+    }
+
+    .file-tag {
+        font-size: 0.75rem;
+        padding: 6px 14px;
+        border-radius: 10px;
+        background: #f0fdfa;
+        color: #0d9488;
+        font-weight: 900;
+        border: 2px solid #ccfbf1;
+        text-transform: uppercase;
+    }
+</style>
+<div class="resource-grid triple-lock-row">
+    {% for resource in resources %}
+    <div class="resource-card">
+        </div>
+    {% endfor %}
+</div>
+
+<div class="hub-container">
+    
+    <div style="max-width: 900px; margin: 0 auto; text-align: center; margin-bottom: 60px;">
+        <span style="color: #14b8a6; font-weight: 900; letter-spacing: 3px; font-size: 0.9rem; text-transform: uppercase;">Portal Assets</span>
+        <h1 style="font-size: 3.5rem; margin-top: 15px; font-weight: 900; color: #0f172a; letter-spacing: -2px;">Resource Hub</h1>
+        <p style="color: #64748b; font-size: 1.2rem; max-width: 600px; margin: 20px auto; line-height: 1.6;">
+            Access ministry documentation and academic guides managed by the LCM system.
+        </p>
+    </div>
+
+    <div class="search-wrapper">
+        <input type="text" id="resourceSearch" class="search-input" placeholder="Search resources by title...">
+        <span style="position: absolute; right: 25px; top: 50%; transform: translateY(-50%); font-size: 1.5rem; color: #94a3b8;">🔍</span>
+    </div>
+
+    <div id="fileGrid">
+        {% for file in files %}
+        {% set js_date = file.uploaded_at.strftime('%d %b, %Y') if file.uploaded_at else 'Recent' %}
+        
+        <div class="resource-card" onclick="openDownloadModal('{{ file.id }}', '{{ file.display_name|e }}', '{{ file.filename|e }}', '{{ js_date }}', '{{ file.size }}')">
+            <div>
+                <div class="icon-box">
+                    {% if 'pdf' in file.filename.lower() %}📜{% elif 'doc' in file.filename.lower() %}📂{% else %}📦{% endif %}
+                </div>
+                
+                <h3 class="card-title">{{ file.display_name }}</h3>
+                <p class="card-meta">
+                    {{ file.uploaded_at.strftime('%b %d, %Y') if file.uploaded_at else 'Recently Uploaded' }} • 
+                    <span style="color: #14b8a6; font-weight: 700;">{{ file.size }}</span>
+                </p>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f1f5f9; padding-top: 20px;">
+                <span class="file-tag">{{ file.filename.split('.')[-1].upper() if '.' in file.filename else 'FILE' }}</span>
+                <div class="download-prompt">
+                    Download <span>→</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div id="downloadModal" class="dl-modal" onclick="closeDownloadModal()">
+    <div class="dl-modal-content" onclick="event.stopPropagation()">
+        <div id="modal-content-area"></div>
+        <button onclick="closeDownloadModal()" style="background: none; border: none; color: #94a3b8; margin-top: 30px; cursor: pointer; font-size: 1rem; font-weight: 700; text-decoration: underline;">Dismiss</button>
+    </div>
+</div>
+
+<script>
+    // Search Functionality (Kept Original Logic)
+    document.getElementById('resourceSearch').addEventListener('input', function(e) {
+        const term = e.target.value.toLowerCase();
+        const cards = document.querySelectorAll('.resource-card');
+
+        cards.forEach(card => {
+            const title = card.querySelector('.card-title').innerText.toLowerCase();
+            card.style.display = title.includes(term) ? 'flex' : 'none';
+        });
+    });
+
+    function openDownloadModal(fileId, title, filename, date, size) {
+        const modal = document.getElementById('downloadModal');
+        const content = document.getElementById('modal-content-area');
+        const extension = filename.split('.').pop().toUpperCase();
+        
+        const downloadUrl = `/static/uploads/${filename}`; 
+
+        content.innerHTML = `
+            <div style="background: rgba(20, 184, 166, 0.1); width: 90px; height: 90px; border-radius: 25px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 25px;">💾</div>
+            <h2 style="margin-bottom: 12px; font-size: 1.8rem; font-weight: 900; color: #0f172a; letter-spacing: -1px;">${title}</h2>
+            
+            <p style="color: #64748b; font-size: 1rem; margin-bottom: 30px; font-weight: 500;">
+                Format: <strong style="color:#0f172a;">${extension}</strong> &nbsp;•&nbsp; Weight: <strong style="color:#0f172a;">${size}</strong>
+            </p>
+            
+            <div style="background: #f8fafc; border-radius: 20px; padding: 20px; border: 2px solid #e2e8f0; text-align: left; margin-bottom: 15px;">
+                <p style="font-size: 0.9rem; color: #475569; margin: 0; line-height: 1.5;">
+                    <span style="color: #14b8a6; font-weight: 900;">VERIFIED:</span> This asset is cleared for campus distribution and quality checked by Joint Developers.
+                </p>
+            </div>
+            <p style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">Uploaded on ${date}</p>
+
+            <a href="${downloadUrl}" class="modal-dl-btn" download>Confirm & Download Now</a>
+        `;
+
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDownloadModal() {
+        document.getElementById('downloadModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('downloadModal')) {
+            closeDownloadModal();
+        }
+    }
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,664 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+        --brand-primary: #4f46e5;
+        --brand-secondary: #6366f1;
+        --accent: #f43f5e;
+        --bg-main: #f1f5f9;
+        --sidebar-dark: #0f172a;
+        --text-main: #1e293b;
+        --text-muted: #64748b;
+        --success-emerald: #10b981;
+        --radius-lg: 16px;
+        --shadow-float: 0 20px 25px -5px rgb(0 0 0 / 0.04), 0 8px 10px -6px rgb(0 0 0 / 0.04);
+    }
+
+    body {
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        margin: 0;
+    }
+
+    /* Layout Structure */
+    .dashboard-wrapper {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        min-height: 100vh;
+    }
+
+    /* Sidebar Styling */
+    .sidebar {
+        background: var(--sidebar-dark);
+        color: white;
+        padding: 30px 20px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        z-index: 100;
+    }
+
+    .sidebar-brand {
+        font-weight: 800;
+        font-size: 1.4rem;
+        letter-spacing: -1px;
+        margin-bottom: 40px;
+        padding-left: 15px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .sidebar-nav { flex-grow: 1; }
+
+    .nav-pill {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 18px;
+        margin-bottom: 8px;
+        border-radius: 12px;
+        border: none;
+        background: transparent;
+        color: #94a3b8;
+        font-weight: 600;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-align: left;
+    }
+
+    .nav-pill:hover { background: rgba(255,255,255,0.05); color: white; }
+    .nav-pill.active {
+        background: var(--brand-primary);
+        color: white;
+        box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4);
+    }
+
+    /* Main Content Area */
+    .main-canvas { padding: 40px 60px; overflow-y: auto; }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 40px;
+    }
+
+    .page-title h1 { margin: 0; font-size: 2rem; font-weight: 800; }
+    .page-title p { color: var(--text-muted); margin: 5px 0 0 0; font-weight: 500; }
+
+    /* Admin Cards */
+    .admin-card {
+        background: white;
+        border-radius: 24px;
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        box-shadow: var(--shadow-float);
+        padding: 40px;
+        display: none;
+        animation: fadeIn 0.4s ease-out;
+    }
+
+    .admin-card.active { display: block; }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Form Design */
+    .label-caps {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 700;
+        color: var(--text-muted);
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 12px;
+        font-family: inherit;
+        font-size: 0.95rem;
+        transition: all 0.2s;
+        box-sizing: border-box;
+    }
+
+    .form-input:focus {
+        border-color: var(--brand-primary);
+        box-shadow: 0 0 0 4px rgba(48, 47, 62, 0.1);
+        outline: none;
+    }
+
+    /* Modern Table */
+    .table-container { border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+        background: #f8fafc;
+        padding: 16px 24px;
+        text-align: left;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        font-weight: 700;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    td { padding: 20px 24px; border-bottom: 1px solid #f1f5f9; font-size: 0.95rem; }
+
+    /* Action Buttons */
+    .btn-action {
+        background: var(--sidebar-dark);
+        color: white;
+        padding: 14px 24px;
+        border-radius: 12px;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        transition: 0.2s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-action:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+    .btn-outline { background: white; color: var(--text-main); border: 1.5px solid #e2e8f0; }
+
+    /* Modal Styling */
+    .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(8px);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-content { background: white; border-radius: 28px; padding: 40px; width: 100%; max-width: 500px; }
+    
+    .status-badge {
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        display: inline-block;
+    }
+    .unread { background: #fee2e2; color: #991b1b; }
+    .read { background: #f1f5f9; color: #64748b; }
+
+    .badge-light {
+        background: #eff6ff;
+        color: var(--brand-primary);
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+    .msg-preview {
+        max-width: 350px;
+        line-height: 1.5;
+        color: var(--text-main);
+    }
+</style>
+
+<div class="dashboard-wrapper">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div style="width: 32px; height: 32px; background: var(--brand-primary); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-shield-halved" style="font-size: 14px; color: white;"></i>
+            </div>
+            Admin Hub
+        </div>
+        
+        <nav class="sidebar-nav">
+            <button class="nav-pill active" onclick="openTab(event, 'tab-events')">
+                <i class="fas fa-calendar-alt"></i> Events
+            </button>
+            <button class="nav-pill" onclick="openTab(event, 'tab-resources')">
+                <i class="fas fa-folder-open"></i> Resources
+            </button>
+            <button class="nav-pill" onclick="openTab(event, 'tab-gallery')">
+                <i class="fas fa-images"></i> Media Gallery
+            </button>
+            <button class="nav-pill" onclick="openTab(event, 'tab-students')">
+                <i class="fas fa-user-graduate"></i> Students
+            </button>
+            <button class="nav-pill" onclick="openTab(event, 'tab-alumni')">
+                <i class="fas fa-graduation-cap"></i> Alumni Network
+            </button>
+            <button class="nav-pill" onclick="openTab(event, 'tab-messages')">
+                <i class="fas fa-envelope"></i> Inquiries
+            </button>
+            <button class="nav-pill" onclick="openTab(event, 'tab-finance')">
+                <i class="fas fa-wallet"></i> Finance
+            </button>
+            <button class="nav-pill" onclick="openTab(event, 'tab-admins')">
+                <i class="fas fa-user-shield"></i> Manage Admins
+            </button>
+        </nav>
+
+        <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+            <a href="{{ url_for('logout') }}" style="text-decoration: none; color: var(--accent); font-weight: 700; display: flex; align-items: center; gap: 10px; padding: 10px 15px;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-canvas">
+        <header>
+            <div class="page-title">
+                <h1>CONTROL PANEL</h1>
+                <p><span style="color: var(--success-emerald);">Connected</span> &bull; {{ now.strftime('%d %B %Y') }}</p>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <a href="{{ url_for('change_password_request') }}" class="btn-action btn-outline" style="padding: 10px 20px; font-size: 0.85rem;">
+                    <i class="fas fa-key"></i> CHANGE PASSWORD
+                </a>
+            </div>
+        </header>
+
+        <div id="tab-events" class="admin-card active">
+            <div style="display: grid; grid-template-columns: 350px 1fr; gap: 60px;">
+                <div>
+                    <h3 style="margin-top: 0;">Create Event</h3>
+                    <form action="{{ url_for('add_event') }}" method="POST" enctype="multipart/form-data">
+                        <div class="form-group"><label class="label-caps">Title</label><input type="text" name="title" class="form-input"></div>
+                        <div class="form-group"><label class="label-caps">Venue</label><input type="text" name="location" class="form-input"></div>
+                        <div class="form-group"><label class="label-caps">Date</label><input type="date" name="event_date" class="form-input" required></div>
+                        <div class="form-group"><label class="label-caps">Details</label><textarea name="description" rows="4" class="form-input"></textarea></div>
+                        <div class="form-group"><label class="label-caps">Media</label><input type="file" name="image" class="form-input" accept="image/*,video/*"></div>
+                        <button type="submit" class="btn-action" style="width: 100%; background: var(--brand-primary);">Publish Event</button>
+                    </form>
+                </div>
+                <div>
+                    <h3 style="margin-top: 0;">Active Schedule</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead><tr><th>Event</th><th>Scheduled</th><th>Actions</th></tr></thead>
+                            <tbody>
+                                {% for event in events %}
+                                <tr>
+                                    <td><div style="font-weight: 700;">{{ event.title }}</div><small style="color: var(--text-muted);">{{ event.location }}</small></td>
+                                    <td style="font-weight: 600;">{{ event.event_date }}</td>
+                                    <td>
+                                        <div style="display: flex; gap: 15px;">
+                                            <button onclick="openEditEventModal('{{ event.id }}', '{{ event.title|e }}', '{{ event.location|e }}', '{{ event.event_date }}', '{{ event.description|e }}')" style="background:none; border:none; color:var(--brand-primary); font-weight:700; cursor:pointer;">EDIT</button>
+                                            <a href="{{ url_for('delete_event', id=event.id) }}" onclick="return confirm('Archive?')" style="color:var(--accent); font-weight:700; text-decoration:none;">REMOVE</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-resources" class="admin-card">
+            <div style="display: grid; grid-template-columns: 350px 1fr; gap: 60px;">
+                <div>
+                    <h3 style="margin-top: 0;">Upload Resource</h3>
+                    <form action="{{ url_for('upload_resource') }}" method="POST" enctype="multipart/form-data">
+                        <div class="form-group"><label class="label-caps">File Label</label><input type="text" name="display_name" class="form-input" required></div>
+                        <div class="form-group"><label class="label-caps">Select File</label><input type="file" name="resource_file" class="form-input" required></div>
+                        <button type="submit" class="btn-action" style="width: 100%; background: var(--brand-primary);">Upload to Downloads</button>
+                    </form>
+                </div>
+                <div>
+                    <h3 style="margin-top: 0;">Repository</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead><tr><th>Label</th><th>Actions</th></tr></thead>
+                            <tbody>
+                                {% set file_list = resources if resources is defined else downloads %}
+                                {% for file in file_list %}
+                                <tr>
+                                    <td><div style="font-weight: 600;"><i class="fas fa-file-pdf" style="margin-right: 8px;"></i> {{ file.display_name }}</div></td>
+                                    <td>
+                                        <div style="display: flex; gap: 15px;">
+                                            <button onclick="openEditResourceModal('{{ file.id }}', '{{ file.display_name|e }}')" style="background:none; border:none; color:var(--brand-primary); font-weight:700; cursor:pointer;">EDIT</button>
+                                            <a href="{{ url_for('delete_resource', id=file.id) }}" style="color:var(--accent); font-weight:700; text-decoration:none;">DELETE</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-gallery" class="admin-card">
+            <div style="display: grid; grid-template-columns: 350px 1fr; gap: 60px;">
+                <div>
+                    <h3 style="margin-top: 0;">Add to Gallery</h3>
+                    <form action="{{ url_for('add_gallery') }}" method="POST" enctype="multipart/form-data">
+                        <div class="form-group"><label class="label-caps">Caption</label><input type="text" name="title" class="form-input"></div>
+                        <div class="form-group"><label class="label-caps">Category</label><input type="text" name="category" class="form-input"></div>
+                        <div class="form-group"><label class="label-caps">Image File</label><input type="file" name="photo" class="form-input" accept="image/*" required></div>
+                        <button type="submit" class="btn-action" style="width: 100%; background: var(--brand-primary);"><i class="fas fa-cloud-upload-alt"></i> Upload Photo</button>
+                    </form>
+                </div>
+                <div>
+                    <h3 style="margin-top: 0;">Gallery</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead><tr><th>Preview</th><th>Caption</th><th>Category</th><th>Action</th></tr></thead>
+                            <tbody>
+                                {% for photo in gallery_items %}
+                                <tr>
+                                    <td><img src="{{ url_for('static', filename='uploads/' + photo.image_path) }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;"></td>
+                                    <td><div style="font-weight: 700;">{{ photo.title }}</div></td>
+                                    <td><span class="badge-light">{{ photo.category }}</span></td>
+                                    <td><a href="{{ url_for('delete_gallery', id=photo.id) }}" onclick="return confirm('Delete?')" style="color:var(--accent); font-weight:700; text-decoration:none;">REMOVE</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-students" class="admin-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <div><h3 style="margin:0;">Student Database</h3><p id="studentCount" style="color:var(--text-muted); font-size:0.85rem;">{{ students|length if students else 0 }} Profiles Found</p></div>
+                <div style="display: flex; gap: 15px;">
+                    <input type="text" id="studentFilter" placeholder="Search students..." class="form-input" style="width: 300px;">
+                    <a href="{{ url_for('export_students') }}" class="btn-action" style="background: var(--brand-primary);"><i class="fas fa-download"></i> Export</a>
+                </div>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Full Name</th><th>Email</th><th>Phone</th><th>School</th><th>Action</th></tr></thead>
+                    <tbody>
+                        {% for student in students %}
+                        <tr class="student-row" data-search="{{ student.full_name|lower }} {{ student.email|lower }} {{ student.phone|lower }} {{ student.school_campus|lower }}">
+                            <td style="font-weight: 700;">{{ student.full_name }}</td>
+                            <td>{{ student.email }}</td>
+                            <td style="font-family: monospace;">{{ student.phone }}</td>
+                            <td><span class="badge-light">{{ student.school_campus }}</span></td>
+                            <td><a href="{{ url_for('unregister_student', id=student.id) }}" onclick="return confirm('Revoke access?')" style="color:var(--accent); font-weight:700; text-decoration:none;">REVOKE</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="tab-alumni" class="admin-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <div><h3 style="margin:0;">Alumni Network</h3><p id="alumniCount" style="color:var(--text-muted); font-size:0.85rem;">{{ alumni|length if alumni else 0 }} Members Found</p></div>
+                <div style="display: flex; gap: 15px;">
+                    <input type="text" id="alumniFilter" placeholder="Search alumni..." class="form-input" style="width: 300px;">
+                    <a href="{{ url_for('export_alumni') }}" class="btn-action" style="background: var(--brand-primary);"><i class="fas fa-file-excel"></i> Export</a>
+                </div>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Full Name</th><th>Email</th><th>Grad Year</th><th>Profession</th><th>Action</th></tr></thead>
+                    <tbody>
+                        {% for person in alumni %}
+                        <tr class="alumni-row" data-search="{{ person.full_name|lower }} {{ person.email|lower }} {{ person.graduation_year }} {{ person.profession|lower }}">
+                            <td style="font-weight: 700;">{{ person.full_name|title }}</td>
+                            <td>{{ person.email }}</td>
+                           
+                            <td style="font-weight: 600;">{{ person.grad_year }}</td>
+                            <td><span class="badge-light">{{ person.profession|capitalize }}</span></td>
+                            <td>
+                                <a href="{{ url_for('delete_alumni', id=person.id) }}" onclick="return confirm('Remove alumni?')" style="color:var(--accent); font-weight:700; text-decoration:none;">REMOVE</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="tab-messages" class="admin-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <div><h3 style="margin:0;">Contact Inquiries</h3><p id="messageCount" style="color:var(--text-muted); font-size:0.85rem;">{{ messages|length if messages else 0 }} Messages received</p></div>
+                <input type="text" id="messageFilter" placeholder="Search inquiries..." class="form-input" style="width: 350px;">
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Sender</th><th>Category</th><th>Message</th><th>Status</th><th>Actions</th></tr></thead>
+                    <tbody>
+                        {% for msg in messages %}
+                        <tr class="message-row" data-search="{{ msg.full_name|lower }} {{ msg.email|lower }} {{ msg.message|lower }}">
+                            <td><div style="font-weight: 700;">{{ msg.full_name }}</div><div style="font-size: 0.75rem;">{{ msg.email }}</div></td>
+                            <td><span class="badge-light">{{ msg.inquiry_type }}</span></td>
+                            <td class="msg-preview"><div>{{ msg.message }}</div></td>
+                            <td><span class="status-badge {{ 'read' if msg.is_read else 'unread' }}">{{ 'Read' if msg.is_read else 'New' }}</span></td>
+                            <td>
+                                <a href="{{ url_for('mark_read', id=msg.id) }}" style="color:var(--brand-primary); font-weight:800; font-size: 0.75rem; text-decoration:none;">{{ 'UNREAD' if msg.is_read else 'MARK READ' }}</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="tab-finance" class="admin-card">
+            <div style="max-width: 700px; margin: 0 auto; text-align: center;">
+                <h2 style="font-size: 1.8rem;">Financial Settings</h2>
+                <form action="{{ url_for('update_settings') }}" method="POST" style="text-align: left; margin-top: 30px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px;">
+                        <div style="padding: 25px; border-radius: 20px; background: #f0fdf4; border: 1.5px solid #dcfce7;">
+                            <h4 style="margin: 0 0 20px 0; color: #166534;"><i class="fas fa-mobile-screen-button"></i> M-Pesa</h4>
+                            <div class="form-group"><label class="label-caps">Paybill No.</label><input type="text" name="paybill_no" class="form-input" value="{{ settings.paybill_no if settings else '' }}"></div>
+                            <div class="form-group"><label class="label-caps">Account Ref.</label><input type="text" name="paybill_acc_no" class="form-input" value="{{ settings.paybill_acc_no if settings else '' }}"></div>
+                        </div>
+                        <div style="padding: 25px; border-radius: 20px; background: #eff6ff; border: 1.5px solid #dbeafe;">
+                            <h4 style="margin: 0 0 20px 0; color: #1e40af;"><i class="fas fa-building-columns"></i> Bank</h4>
+                            <div class="form-group"><label class="label-caps">Institution</label><input type="text" name="bank_name" class="form-input" value="{{ settings.bank_name if settings else '' }}"></div>
+                            <div class="form-group"><label class="label-caps">Account No.</label><input type="text" name="account_no" class="form-input" value="{{ settings.account_no if settings else '' }}"></div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-action" style="width: 100%; height: 55px; background: var(--sidebar-dark);">Update Financial Details</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="tab-admins" class="admin-card">
+    <div style="display: grid; grid-template-columns: 350px 1fr; gap: 60px;">
+        <div>
+            <h3 style="margin-bottom: 20px;">Add new Admin</h3>
+            <form action="{{ url_for('add_new_admin') }}" method="POST">
+                <div class="form-group">
+                    <label class="label-caps">Username</label>
+                    <input type="text" name="username" class="form-input" autocomplete="off" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="label-caps">Email</label>
+                    <input type="email" name="email" class="form-input" autocomplete="off" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="label-caps">Password</label>
+                    <input type="password" 
+                           name="password" 
+                           id="new_admin_password"
+                           class="form-input" 
+                           autocomplete="new-password"
+                           required 
+                           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}"
+                           title="Must contain at least 8 characters, including uppercase, lowercase, number, and special symbol.">
+                    
+                    <p style="font-size: 0.75rem; color: #64748b; margin-top: 6px; line-height: 1.4;">
+                        <i class="fas fa-shield-alt" style="color: var(--brand-primary);"></i> 
+                        <strong>Requirement:</strong> Use 8+ characters with at least one uppercase, one number, and one symbol (e.g., @, #, $).
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label class="label-caps">Confirm Password</label>
+                    <input type="password" 
+                           name="confirm_password" 
+                           class="form-input" 
+                           autocomplete="new-password"
+                           required>
+                </div>
+
+                <button type="submit" class="btn-action" style="width: 100%; background: var(--brand-primary); margin-top: 10px;">
+                    Create Account
+                </button>
+            </form>
+        </div>
+
+        <div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Email</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for adm in admins %}
+                            {% if adm.id == session.get("admin_id") %}
+                                {% set confirm_msg = "DANGER: You are about to delete YOUR OWN account and will be logged out!" %}
+                            {% else %}
+                                {% set confirm_msg = "Revoke access for " ~ adm.username ~ "?" %}
+                            {% endif %}
+                        <tr>
+                            <td style="font-weight: 700;">
+                                {{ adm.username }}
+                                {% if adm.id == session.get("admin_id") %}
+                                    <span style="color: var(--success-emerald); font-size: 0.7rem; margin-left: 5px;">(YOU)</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ adm.email }}</td>
+                            <td>
+                                <a href="{{ url_for('delete_admin', id=adm.id) }}" 
+                                   style="color: var(--accent); font-weight: 700; text-decoration: none;"
+                                   onclick="return confirm('{{ confirm_msg }}');">
+                                    REVOKE
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editEventModal" class="modal">
+    <div class="modal-content">
+        <h3>Modify Event</h3>
+        <form id="editEventForm" method="POST" enctype="multipart/form-data">
+            <div class="form-group"><label class="label-caps">Title</label><input type="text" name="title" id="edit_title" class="form-input" required></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="form-group"><label class="label-caps">Date</label><input type="date" name="event_date" id="edit_date" class="form-input" required></div>
+                <div class="form-group"><label class="label-caps">Venue</label><input type="text" name="location" id="edit_loc" class="form-input" required></div>
+            </div>
+            <div class="form-group"><label class="label-caps">Description</label><textarea name="description" id="edit_desc" rows="3" class="form-input"></textarea></div>
+            <div class="form-group"><label class="label-caps">Change Image</label><input type="file" name="image" class="form-input"></div>
+            <div style="display: flex; gap: 12px; margin-top: 20px;">
+                <button type="submit" class="btn-action" style="flex:1; background: var(--brand-primary);">Save Changes</button>
+                <button type="button" onclick="closeModal('editEventModal')" class="btn-action btn-outline" style="flex:1;">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="editResourceModal" class="modal">
+    <div class="modal-content">
+        <h3>Modify Resource</h3>
+        <form id="editResourceForm" method="POST">
+            <div class="form-group"><label class="label-caps">Display Name</label><input type="text" name="display_name" id="edit_res_name" class="form-input" required></div>
+            <div style="display: flex; gap: 12px;">
+                <button type="submit" class="btn-action" style="flex:1; background: var(--brand-primary);">Save</button>
+                <button type="button" onclick="closeModal('editResourceModal')" class="btn-action btn-outline" style="flex:1;">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Tab Management
+    function openTab(evt, tabName) {
+        document.querySelectorAll(".admin-card").forEach(c => c.classList.remove("active"));
+        document.querySelectorAll(".nav-pill").forEach(p => p.classList.remove("active"));
+        
+        const target = document.getElementById(tabName);
+        if(target) target.classList.add("active");
+        
+        document.querySelectorAll(".nav-pill").forEach(pill => { 
+            if(pill.getAttribute('onclick').includes(tabName)) pill.classList.add("active"); 
+        });
+        localStorage.setItem('activeAdminTab', tabName);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedTab = localStorage.getItem('activeAdminTab') || 'tab-events';
+        openTab(null, savedTab);
+    });
+
+    // Modal Controls
+    function openEditEventModal(id, title, loc, date, desc) {
+        document.getElementById('edit_title').value = title;
+        document.getElementById('edit_loc').value = loc;
+        document.getElementById('edit_date').value = date;
+        document.getElementById('edit_desc').value = desc;
+        document.getElementById('editEventForm').action = "/admin/edit_event/" + id;
+        document.getElementById('editEventModal').style.display = 'flex';
+    }
+
+    function openEditResourceModal(id, name) {
+        document.getElementById('edit_res_name').value = name;
+        document.getElementById('editResourceForm').action = "/admin/edit_resource/" + id;
+        document.getElementById('editResourceModal').style.display = 'flex';
+    }
+
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    window.onclick = function(e) { if (e.target.className === 'modal') e.target.style.display = 'none'; }
+
+    // Reusable Filter Function
+    function setupFilter(inputId, rowClass, countId) {
+        const input = document.getElementById(inputId);
+        if(!input) return;
+        input.addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const rows = document.querySelectorAll('.' + rowClass);
+            let count = 0;
+            rows.forEach(row => {
+                const match = row.getAttribute('data-search').includes(query);
+                row.style.display = match ? '' : 'none';
+                if(match) count++;
+            });
+            const countDisplay = document.getElementById(countId);
+            if(countDisplay) countDisplay.innerText = `${count} Matches Found`;
+        });
+    }
+
+    // Initialize All Filters
+    setupFilter('studentFilter', 'student-row', 'studentCount');
+    setupFilter('alumniFilter', 'alumni-row', 'alumniCount');
+    setupFilter('messageFilter', 'message-row', 'messageCount');
+</script>
+
+{% endblock %}

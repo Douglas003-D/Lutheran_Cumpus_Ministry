@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lutheran Campus Ministry</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        /* --- General Reset --- */
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- Navigation Bar --- */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.98); 
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            padding: 15px 40px; 
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: #1a2a6c; 
+            text-decoration: none !important;
+            letter-spacing: -0.5px;
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;           
+            align-items: center;
+            margin-left: auto; 
+            margin-right: 20px;
+        }
+
+        .pill-btn {
+            text-decoration: none;
+            color: #475569; 
+            background: transparent;
+            padding: 12px 22px; 
+            font-size: 14px; 
+            font-weight: 800;
+            text-transform: uppercase;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .pill-btn:hover {
+            color: #1a2a6c;
+            background: #f1f5f9;
+        }
+
+        /* --- Membership Dropdown --- */
+        .membership-dropdown .btn-register {
+            background: #1a2a6c; 
+            color: white !important;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 13px;
+            box-shadow: 0 4px 12px rgba(26, 42, 108, 0.2);
+            transition: 0.3s;
+        }
+
+        .membership-dropdown .btn-register:hover {
+            background: #14b8a6 !important;
+            transform: translateY(-2px);
+        }
+
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            padding: 10px;
+            margin-top: 15px !important;
+        }
+
+        .dropdown-item {
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            color: #334155;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* --- Mega Footer Styling --- */
+        .mega-footer {
+            background: #0f172a;
+            color: #f8fafc;
+            padding: 60px 40px 30px;
+            margin-top: auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-col h4 {
+            color: #fff;
+            font-weight: 800;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-col ul li a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .footer-col ul li a:hover {
+            color: #2ecc71;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: #1e293b;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .social-icon:hover {
+            background: #1877F2; /* Facebook Blue */
+            transform: translateY(-3px);
+        }
+
+        /* Content Wrapper */
+        .content-wrapper { flex: 1 0 auto; }
+
+        /* Mobile Fix */
+        @media (max-width: 1024px) {
+            .navbar { padding: 15px 20px; flex-wrap: wrap; }
+            .nav-links { order: 3; width: 100%; justify-content: center; margin-top: 15px; }
+            .logo { font-size: 1.1rem; }
+            .footer-grid { text-align: center; }
+            .footer-col h4 { margin-top: 20px; }
+            /* --- THE GLOBAL LOCK --- */
+
+/* 1. Add this class to any row you want to stay horizontal forever */
+.lock-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important; /* This stops stacking */
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+/* 2. This makes the items inside that row shrink to fit */
+.shrink-item {
+    flex-shrink: 1 !important;
+    min-width: 0 !important;
+}
+
+/* 3. This makes the text get smaller so it doesn't overlap */
+.lock-text {
+    font-size: clamp(0.7rem, 2vw, 1rem) !important;
+    white-space: nowrap;
+}
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar"> 
+    <a href="{{ url_for('index') }}" class="logo">LUTHERAN CAMPUS MINISTRY</a> 
+    
+    <div class="nav-links">
+        <a href="{{ url_for('index') }}" class="pill-btn">Home</a>
+        <a href="{{ url_for('about') }}" class="pill-btn">About Us</a>
+        <a href="{{ url_for('events') }}" class="pill-btn">Events</a>
+        <a href="{{ url_for('gallery') }}" class="pill-btn">Gallery</a>
+        <a href="{{ url_for('downloads') }}" class="pill-btn">Downloads</a>
+        <a href="{{ url_for('contacts') }}" class="pill-btn">Contacts</a>
+        <a href="{{ url_for('donate') }}" class="pill-btn">Donate</a>
+    </div>
+
+    <div class="nav-actions">
+        {% if session.loggedin %}
+            <a href="{{ url_for('admin_dashboard') }}" class="pill-btn" style="border: 2px solid #f1c40f; color: #d97706;">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="{{ url_for('logout') }}" class="pill-btn" style="border: 2px solid #ef4444; color: #ef4444; margin-left: 10px;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        {% else %}
+            <div class="dropdown membership-dropdown">
+                <button class="btn btn-register dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Membership <i class="fas fa-chevron-down" style="font-size: 10px; margin-left: 5px;"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a class="dropdown-item" href="{{ url_for('register') }}">
+                            <i class="fas fa-user-plus"></i> Student Register
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ url_for('register_alumni') }}">
+                            <i class="fas fa-user-graduate"></i> Alumni Network
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</nav>
+
+<div class="content-wrapper">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert" style="padding: 15px; text-align: center; background: #ecfdf5; color: #065f46; font-weight: 600; border-bottom: 2px solid #10b981; margin: 0;">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</div>
+
+<footer class="mega-footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>About LCM</h4>
+            <p style="font-size: 0.95rem; line-height: 1.6; color: #94a3b8;">Empowering University students to live out their faith through prayer, study, and service. We are a grace-centered community open to all.</p>
+            <div class="social-links">
+                <a href="https://facebook.com/your-page-link" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            </div>
+        </div>
+        
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="{{ url_for('about') }}">About Our Ministry</a></li>
+                <li><a href="{{ url_for('events') }}">Upcoming Events</a></li>
+                <li><a href="{{ url_for('downloads') }}">Sermons & Resources</a></li>
+                <li><a href="{{ url_for('donate') }}">Support Us (Giving)</a></li>
+                <li><a href="{{ url_for('contacts') }}">Get in Touch</a></li>
+                <li><a href="{{ url_for('gallery') }}">Gallery</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>Visit Us</h4>
+            <ul style="color: #94a3b8;">
+                <li><i class="fas fa-map-marker-alt" style="color: #2ecc71; margin-right: 10px;"></i> Maseno University, Main Campus</li>
+                <li><i class="fas fa-phone" style="color: #2ecc71; margin-right: 10px;"></i> +254 700 000 000</li>
+                <li><i class="fas fa-envelope" style="color: #2ecc71; margin-right: 10px;"></i> hello@lcmmaseno.org</li>
+                <li><i class="fas fa-clock" style="color: #2ecc71; margin-right: 10px;"></i> Sun: 9:00 AM - 12:00 PM</li>
+            </ul>
+        </div>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #1e293b; margin: 40px 0;">
+    
+    <div style="display: flex; justify-content: center; align-items: center; font-size: 0.85rem; color: #94a3b8;">
+        <p>© Lutheran Campus Ministry. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
