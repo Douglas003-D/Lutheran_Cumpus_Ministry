@@ -361,112 +361,135 @@ def forgot_password():
         cur.close()
 
         if user:
+            # Generate the timed token
             s = get_serializer()
             token = s.dumps(email, salt='password-reset-salt')
+            
+            # Generate the absolute URL for the email link
             link = url_for('reset_with_token', token=token, _external=True)
+            
             try:
                 msg = EmailMessage(
-                    "Password Reset Request",
-                    f"Reset your admin password by clicking here: {link}\nExpires in 30 mins.",
+                    "Admin Password Reset Request",
+                    f"To reset your password, visit the following link:\n{link}\n\n"
+                    f"This link will expire in 30 minutes.",
                     to=[email]
                 )
                 msg.send()
-                flash("Reset instructions sent to your email.", "info")
+                flash("A reset link has been sent to your email address.", "info")
             except Exception as e:
-                logger.error(f"Mail error: {e}")
-                flash("Mail server is currently unavailable.", "danger")
+                app.logger.error(f"Mail delivery failed: {e}")
+                flash("Internal mail server error. Please try again later.", "danger")
         else:
-            flash("If that email exists, a link has been sent.", "info")
+            # We use the same message for security to prevent email harvesting
+            flash("If that email is in our system, a reset link has been sent.", "info")
+        
         return redirect(url_for('admin_login'))
+        
     return render_template('admin_forgot.html')
 
+
+# --- RESET PASSWORD FINAL STEP ---
 @app.route('/admin/reset_password/<token>', methods=['GET', 'POST'])
 def reset_with_token(token):
     s = get_serializer()
     try:
+        # Load the email from the token; expires in 1800 seconds (30 mins)
         email = s.loads(token, salt='password-reset-salt', max_age=1800)
-    except:
-        flash("Reset link is invalid or expired.", "danger")
-        return redirect(url_for('admin_login'))
+    except SignatureExpired:
+        flash("The reset link has expired. Please request a new one.", "danger")
+        return redirect(url_for('forgot_password'))
+    except BadTimeSignature:
+        flash("The reset link is invalid.", "danger")
+        return redirect(url_for('forgot_password'))
+    except Exception:
+        flash("An error occurred during verification.", "danger")
+        return redirect(url_for('forgot_password'))
 
     if request.method == 'POST':
         new_pass = request.form.get('new_password')
         confirm = request.form.get('confirm_password')
         
         if new_pass != confirm:
-            flash("Passwords do not match.", "danger")
+            flash("Passwords do not match. Please try again.", "danger")
             return render_template('admin_reset_new.html', token=token)
 
-        hashed = generate_password_hash(new_pass)
+        # Hash and Update MySQL
+        hashed_pw = generate_password_hash(new_pass)
         cur = mysql.connection.cursor()
-        cur.execute("UPDATE admin SET password=%s WHERE email=%s", (hashed, email))
+        cur.execute("UPDATE admin SET password=%s WHERE email=%s", (hashed_pw, email))
         mysql.connection.commit()
         cur.close()
-        flash("Password updated successfully.", "success")
+        
+        flash("Your password has been successfully updated!", "success")
         return redirect(url_for('admin_login'))
+        
+    # Render the form on GET request
     return render_template('admin_reset_new.html', token=token)
 
-@app.route('/admin/change_password_request', methods=['GET', 'POST'])
+# STEP 1: Request the change
+@app.route('/admin/change_request', methods=['GET', 'POST'])
 @admin_required
-def change_password_request():
+def admin_change_request():
     if request.method == 'POST':
         email = request.form.get('email')
+        
         if email != session.get('email'):
-            flash("The provided email does not match your account.", "danger")
-            return redirect(url_for('change_password_request'))
+            flash("The email entered does not match your logged-in account.", "danger")
+            return redirect(url_for('admin_change_request'))
 
         s = get_serializer()
-        token = s.dumps(email, salt='logged-in-pw-change')
-        link = url_for('change_password_verified', token=token, _external=True)
+        token = s.dumps(email, salt='secure-change-salt')
+        link = url_for('admin_confirm_change', token=token, _external=True)
+
         try:
             msg = EmailMessage(
-                "Security Verification: Password Change",
-                f"You requested to change your password. Click here to verify: {link}\nExpires in 15 mins.",
+                "Security: Password Change Request",
+                f"Use this link to change your password: {link}",
                 to=[email]
             )
             msg.send()
-            flash("A secure verification link has been sent to your email.", "success")
+            flash("Check your email for the verification link.", "info")
             return redirect(url_for('admin_dashboard'))
-        except Exception as e:
-            logger.error(f"Mail error: {e}")
-            flash("Mail server error. Could not send verification.", "danger")
-            
-    return render_template('admin_password_request.html')
+        except Exception:
+            flash("Failed to send email.", "danger")
 
-@app.route('/admin/verify_change/<token>', methods=['GET', 'POST'])
-@admin_required
-def change_password_verified(token):
+    return render_template('admin_change_request.html')
+
+# STEP 2: The actual update (The link from the email)
+@app.route('/admin/confirm_change/<token>', methods=['GET', 'POST'])
+def admin_confirm_change(token):
     s = get_serializer()
     try:
-        email = s.loads(token, salt='logged-in-pw-change', max_age=900)
+        email = s.loads(token, salt='secure-change-salt', max_age=900)
     except:
-        flash("The verification link has expired or is invalid.", "danger")
-        return redirect(url_for('change_password_request'))
+        flash("The link has expired or is invalid.", "danger")
+        return redirect(url_for('admin_change_request'))
 
     if request.method == 'POST':
-        old_pass = request.form.get('old_password')
-        new_pass = request.form.get('new_password')
-        confirm = request.form.get('confirm_password')
+        old_pw = request.form.get('old_password')
+        new_pw = request.form.get('new_password')
+        conf_pw = request.form.get('confirm_password')
 
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute("SELECT password FROM admin WHERE email=%s", (email,))
         user = cur.fetchone()
 
-        if user and check_password_hash(user['password'], old_pass):
-            if new_pass == confirm:
-                hashed = generate_password_hash(new_pass)
+        if user and check_password_hash(user['password'], old_pw):
+            if new_pw == conf_pw:
+                hashed = generate_password_hash(new_pw)
                 cur.execute("UPDATE admin SET password=%s WHERE email=%s", (hashed, email))
                 mysql.connection.commit()
                 cur.close()
-                flash("Your password has been updated successfully.", "success")
+                flash("Success! Password updated.", "success")
                 return redirect(url_for('admin_dashboard'))
             else:
                 flash("New passwords do not match.", "warning")
         else:
-            flash("The current password you entered is incorrect.", "danger")
+            flash("Incorrect current password.", "danger")
         cur.close()
 
-    return render_template('admin_change_password.html', token=token)
+    return render_template('admin_change_confirm.html', token=token)
 
 @app.route('/admin/mark_read/<int:id>')
 @admin_required

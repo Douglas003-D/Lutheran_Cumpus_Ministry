@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS contact_messages (
 -- 8. Core Site Settings
 CREATE TABLE IF NOT EXISTS site_settings (
     id INT PRIMARY KEY,
-    office_location VARCHAR(255) DEFAULT 'Main Campus',
+    office_location VARCHAR(255) DEFAULT 'Kisumu',
     paybill_no VARCHAR(255),
     paybill_acc_no VARCHAR(255),
     bank_name VARCHAR(255),
@@ -88,4 +88,4 @@ CREATE TABLE IF NOT EXISTS alumni (
 );
 
 -- Ensure default site settings row exists
-INSERT IGNORE INTO site_settings (id, office_location) VALUES (1, 'Main Campus');
+INSERT IGNORE INTO site_settings (id, office_location) VALUES (1, 'Kisumu');

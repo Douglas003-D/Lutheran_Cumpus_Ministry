@@ -5,8 +5,9 @@
         <div class="col-md-5">
             <div class="card shadow border-0" style="border-radius: 15px;">
                 <div class="card-body p-5">
-                    <h3 class="text-center fw-bold mb-4">Update Password</h3>
-                    <form method="POST">
+                    <h3 class="text-center fw-bold mb-4">Set New Password</h3>
+                    
+                    <form method="POST" action="{{ url_for('admin_confirm_change', token=token) }}">
                         <div class="mb-3">
                             <label class="form-label fw-bold small">Current Password</label>
                             <input type="password" name="old_password" class="form-control" required style="border-radius: 8px;">
@@ -20,8 +21,8 @@
                             <label class="form-label fw-bold small">Confirm New Password</label>
                             <input type="password" name="confirm_password" class="form-control" required style="border-radius: 8px;">
                         </div>
-                        <button type="submit" class="btn w-100 fw-bold py-3" style="background-color: #20c997; color: white; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px;">
-                            Update Securely
+                        <button type="submit" class="btn w-100 fw-bold py-3" style="background-color: #20c997; color: white; border-radius: 8px; text-transform: uppercase;">
+                            Update Password
                         </button>
                     </form>
                 </div>

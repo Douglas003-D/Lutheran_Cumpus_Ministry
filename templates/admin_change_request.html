@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block content %}
+<div style="display: flex; justify-content: center; align-items: center; min-height: 80vh; background-color: #f8f9fa;">
+    <div style="background: white; width: 100%; max-width: 400px; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center;">
+        <h2 style="font-weight: 800; color: #1a202c; margin-bottom: 10px;">Security Check</h2>
+        <p style="color: #718096; margin-bottom: 30px;">Verify your email to receive a password change link.</p>
+
+        <form method="POST" style="text-align: left;">
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-weight: 700; color: #4a5568; margin-bottom: 8px;">Admin Email</label>
+                <input type="email" name="email" placeholder="Enter your email" required 
+                    style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0; outline: none;">
+            </div>
+            <button type="submit" style="width: 100%; background-color: #20c997; color: white; border: none; padding: 14px; border-radius: 10px; font-weight: 700; cursor: pointer;">
+                Send Verification Link
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
