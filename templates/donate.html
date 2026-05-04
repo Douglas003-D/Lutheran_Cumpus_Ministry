@@ -232,14 +232,46 @@ function handleSTKPush() {
         return;
     }
 
+    // Visual feedback
     btn.innerHTML = "Processing...";
     btn.style.opacity = "0.7";
     btn.disabled = true;
 
-    setTimeout(() => {
-        alert("STK Push request sent to " + phone + ". Please check your phone!");
-        closePayment();
-    }, 1500);
+    // ACTUAL BRIDGE TO PYTHON BACKEND
+    fetch('/initiate-donation', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            phone: phone,
+            amount: amount
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("M-Pesa API Response:", data);
+        
+        if (data.ResponseCode === "0") {
+            alert("STK Push request sent to " + phone + ". Please check your phone!");
+            closePayment();
+        } else {
+            // Handle Safaricom errors (e.g. invalid phone, wrong passkey)
+            alert("M-Pesa Error: " + (data.CustomerMessage || data.ResponseDescription || "Transaction failed."));
+            resetBtn(btn);
+        }
+    })
+    .catch(error => {
+        console.error('Fetch Error:', error);
+        alert("Connection Error: Could not reach the server.");
+        resetBtn(btn);
+    });
+}
+
+function resetBtn(btn) {
+    btn.innerHTML = "INITIATE PAYMENT";
+    btn.style.opacity = "1";
+    btn.disabled = false;
 }
 
 function closePayment(){
@@ -247,7 +279,5 @@ function closePayment(){
     document.body.style.overflow = 'auto';
 }
 </script>
-
-
 
 {% endblock %}

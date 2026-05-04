@@ -89,3 +89,13 @@ CREATE TABLE IF NOT EXISTS alumni (
 
 -- Ensure default site settings row exists
 INSERT IGNORE INTO site_settings (id, office_location) VALUES (1, 'Kisumu');
+USE lcm;
+CREATE TABLE donations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    receipt_number VARCHAR(50),
+    amount DECIMAL(10,2),
+    phone_number VARCHAR(15),
+    checkout_request_id VARCHAR(100),
+    status VARCHAR(20),
+    created_at DATETIME
+);

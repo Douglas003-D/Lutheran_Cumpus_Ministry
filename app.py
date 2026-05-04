@@ -213,59 +213,122 @@ def donate():
 
 @app.route('/initiate-donation', methods=['POST'])
 def initiate_donation():
-    """Initiates M-Pesa STK Push."""
-    data = request.get_json()
-    phone = data.get('phone')  # Expecting 2547XXXXXXXX
-    amount = data.get('amount')
-
-    if not phone or not amount:
-        return jsonify({'status': 'error', 'message': 'Missing phone or amount'}), 400
-
-    token = get_mpesa_access_token()
-    password, timestamp = generate_stk_password()
-    
-    if not token:
-        return jsonify({'status': 'error', 'message': 'M-Pesa authentication failed.'}), 500
-
-    headers = {"Authorization": f"Bearer {token}"}
-    request_body = {
-        "BusinessShortCode": app.config['MPESA_SHORTCODE'],
-        "Password": password,
-        "Timestamp": timestamp,
-        "TransactionType": "CustomerPayBillOnline",
-        "Amount": int(amount),
-        "PartyA": phone,
-        "PartyB": app.config['MPESA_SHORTCODE'],
-        "PhoneNumber": phone,
-        "CallBackURL": app.config['MPESA_CALLBACK_URL'],
-        "AccountReference": "LCM Donation",
-        "TransactionDesc": "Ministry Support"
-    }
-
     try:
+        data = request.get_json()
+        raw_phone = data.get('phone') 
+        amount = data.get('amount')
+
+        if not raw_phone or not amount:
+            return jsonify({'status': 'error', 'message': 'Missing phone or amount'}), 400
+
+        # --- PHONE CLEANER ---
+        # Ensures format is 2547XXXXXXXX or 2541XXXXXXXX
+        phone = str(raw_phone).strip().replace("+", "")
+        if phone.startswith("0"):
+            phone = "254" + phone[1:]
+        elif phone.startswith("7") or phone.startswith("1"):
+            phone = "254" + phone
+        # ---------------------
+
+        token = get_mpesa_access_token()
+        password, timestamp = generate_stk_password()
+        
+        if not token:
+            print("!!! MPESA AUTH ERROR: Could not fetch access token !!!")
+            return jsonify({'status': 'error', 'message': 'M-Pesa authentication failed.'}), 500
+
+        headers = {"Authorization": f"Bearer {token}"}
+        
+        request_body = {
+            "BusinessShortCode": app.config['MPESA_SHORTCODE'],
+            "Password": password,
+            "Timestamp": timestamp,
+            "TransactionType": "CustomerPayBillOnline", 
+            "Amount": int(float(amount)), 
+            "PartyA": phone,
+            "PartyB": app.config['MPESA_SHORTCODE'],
+            "PhoneNumber": phone,
+            "CallBackURL": app.config['MPESA_CALLBACK_URL'],
+            "AccountReference": "LCM Donation",
+            "TransactionDesc": "Ministry Support"
+        }
+
         api_url = f"{app.config['MPESA_BASE_URL']}/mpesa/stkpush/v1/processrequest"
         response = requests.post(api_url, json=request_body, headers=headers, timeout=30)
-        return jsonify(response.json())
-    except Exception as e:
-        logger.error(f"STK Push Request Error: {e}")
-        return jsonify({'status': 'error', 'message': "Connection to M-Pesa failed."}), 500
+        res_data = response.json()
 
+        # FORCE DEBUG PRINT TO TERMINAL
+        print("\n--- SAFARICOM DEBUG START ---")
+        print(f"Status: {response.status_code}")
+        print(f"Response: {res_data}")
+        print("--- SAFARICOM DEBUG END ---\n")
+        
+        return jsonify(res_data)
+
+    except Exception as e:
+        print(f"CRITICAL SYSTEM ERROR: {str(e)}")
+        return jsonify({'status': 'error', 'message': "Internal server error occurred."}), 500
+  
 @app.route('/mpesa-callback', methods=['POST'])
 def mpesa_callback():
-    """Handles the M-Pesa response after a user interacts with the STK prompt."""
+    """Handles the M-Pesa response and saves successful transactions to MySQL."""
     data = request.get_json()
-    logger.info(f"M-Pesa Callback Received: {data}")
     
-    # Process successful transactions here
+    # Print the raw data to see the structure in the terminal
+    print(f"\n[CALLBACK RECEIVED]: {data}\n")
+    
     try:
-        result_code = data['Body']['stkCallback']['ResultCode']
-        if result_code == 0:
-            # Payment Successful
-            # Add logic here to save the transaction to your DB
-            pass
-    except Exception as e:
-        logger.error(f"Callback processing error: {e}")
+        stk_callback = data['Body']['stkCallback']
+        result_code = stk_callback['ResultCode']
+        result_desc = stk_callback['ResultDesc']
+        checkout_request_id = stk_callback['CheckoutRequestID']
 
+        if result_code == 0:
+            # Payment was successful
+            items = stk_callback['CallbackMetadata']['Item']
+            
+            # Extract specific values from the metadata list
+            mpesa_receipt = next((item['Value'] for item in items if item['Name'] == 'MpesaReceiptNumber'), "N/A")
+            amount_paid = next((item['Value'] for item in items if item['Name'] == 'Amount'), 0)
+            phone_number = next((item['Value'] for item in items if item['Name'] == 'PhoneNumber'), "N/A")
+
+            print(f"SUCCESS: {mpesa_receipt} | Amount: {amount_paid} | Phone: {phone_number}")
+
+            # --- SAVE TO MYSQL ---
+            cur = mysql.connection.cursor()
+            try:
+                cur.execute("""
+                    INSERT INTO donations (
+                        receipt_number, 
+                        amount, 
+                        phone_number, 
+                        checkout_request_id, 
+                        status, 
+                        created_at
+                    ) VALUES (%s, %s, %s, %s, %s, %s)
+                """, (
+                    mpesa_receipt, 
+                    amount_paid, 
+                    phone_number, 
+                    checkout_request_id, 
+                    'Completed', 
+                    datetime.now()
+                ))
+                mysql.connection.commit()
+                print(f"DB Update: Transaction {mpesa_receipt} saved successfully.")
+            except Exception as db_err:
+                print(f"DATABASE ERROR: {db_err}")
+            finally:
+                cur.close()
+
+        else:
+            # ResultCode != 0 means user cancelled or transaction failed
+            print(f"PAYMENT FAILED: {result_desc} (Code: {result_code})")
+
+    except Exception as e:
+        print(f"CALLBACK PROCESSING ERROR: {e}")
+
+    # Safaricom requires this specific JSON response
     return jsonify({"ResultCode": 0, "ResultDesc": "Accepted"})
 
 @app.route('/register', methods=['GET', 'POST'])
