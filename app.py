@@ -4,6 +4,7 @@ import logging
 import base64
 import requests
 import re
+import webbrowser
 import csv
 import io  # Standard io import for BytesIO and StringIO
 from io import BytesIO, StringIO
@@ -1113,4 +1114,12 @@ def logout():
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
+    if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
+        edge_path = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+        if os.path.exists(edge_path):
+            webbrowser.register('edge', None, webbrowser.BackgroundBrowser(edge_path))
+            webbrowser.get('edge').open("http://127.0.0.1:5000")
+        else:
+            webbrowser.open("http://127.0.0.1:5000")
+
     app.run(host='127.0.0.1', port=5000, debug=True)
