@@ -1,20 +1,54 @@
 {% extends "layout.html" %}
-{% block content %}
-<div style="display: flex; justify-content: center; align-items: center; min-height: 80vh; background-color: #f8f9fa;">
-    <div style="background: white; width: 100%; max-width: 400px; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center;">
-        <h2 style="font-weight: 800; color: #1a202c; margin-bottom: 10px;">Security Check</h2>
-        <p style="color: #718096; margin-bottom: 30px;">Verify your email to receive a password change link.</p>
 
-        <form method="POST" style="text-align: left;">
-            <div style="margin-bottom: 20px;">
-                <label style="display: block; font-weight: 700; color: #4a5568; margin-bottom: 8px;">Admin Email</label>
-                <input type="email" name="email" placeholder="Enter your email" required 
-                    style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0; outline: none;">
+{% block content %}
+<div class="container" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px;">
+    
+    <div class="form-container" style="width: 100%; max-width: 420px; margin: 0;">
+        <div class="text-center mb-4">
+            <div style="font-size: 2.8rem; margin-bottom: 15px;">🛡️</div>
+            <h2 style="font-weight: 900; letter-spacing: -1.5px; color: #0f172a;">Security Check</h2>
+            <p style="color: #64748b; font-size: 0.95rem;">Verify your email to receive a password change link.</p>
+        </div>
+
+        <form method="POST">
+            <div class="mb-4">
+                <label class="form-label small fw-bold text-uppercase" style="letter-spacing: 1px; color: #1e293b; display: block; margin-bottom: 8px;">
+                    Admin Email Address
+                </label>
+                <input type="email" name="email" class="form-control shadow-sm" 
+                       placeholder="" required 
+                       style="width: 100%; border-radius: 12px; padding: 14px; border: 1px solid #e2e8f0; box-sizing: border-box;">
             </div>
-            <button type="submit" style="width: 100%; background-color: #20c997; color: white; border: none; padding: 14px; border-radius: 10px; font-weight: 700; cursor: pointer;">
+
+            <button type="submit" class="pill-btn w-100" 
+                    style="background: #14b8a6; border: none; cursor: pointer; padding: 16px; font-size: 14px;">
                 Send Verification Link
             </button>
         </form>
+
+        <div class="text-center mt-4">
+            <p style="font-size: 0.85rem; color: #94a3b8;">
+                Remembered your password? 
+                <a href="{{ url_for('admin_login') }}" style="color: #14b8a6; text-decoration: none; font-weight: 700;">
+                    Back to Login
+                </a>
+            </p>
+        </div>
     </div>
+
 </div>
+
+<style>
+    /* Keep input interaction consistent with the rest of your app */
+    .form-control:focus {
+        border-color: #14b8a6 !important;
+        box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.1) !important;
+        outline: none;
+    }
+    
+    /* Ensure button transitions smoothly */
+    .pill-btn {
+        transition: all 0.3s ease;
+    }
+</style>
 {% endblock %}

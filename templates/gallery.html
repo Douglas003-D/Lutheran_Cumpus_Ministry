@@ -1,16 +1,30 @@
 {% extends "layout.html" %}
-{% block content %}
 
+{% block content %}
 <style>
     /* --- Gallery Technical Hub Theme --- */
     .hub-container {
-        padding: 80px 10%;
+        padding: 80px 5%;
         background: #f8fafc;
         min-height: 100vh;
         font-family: 'Inter', sans-serif;
     }
 
-    /* --- Search Filter Controls --- */
+    /* --- Mega Bold Header Section --- */
+    .gallery-header {
+        max-width: 900px;
+        margin: 0 auto 60px;
+        text-align: center;
+    }
+    .gallery-header h1 {
+        font-size: 3.5rem;
+        margin-top: 15px;
+        font-weight: 900;
+        color: #0f172a;
+        letter-spacing: -2px;
+    }
+
+    /* --- Filter Controls --- */
     .search-filter-wrapper {
         max-width: 600px;
         margin: 0 auto 60px;
@@ -48,18 +62,18 @@
 
     /* --- Responsive Grid --- */
     .gallery-grid {
-        max-width: 1200px;
+        max-width: 1400px;
         margin: 0 auto;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 35px;
-        margin-bottom: 80px;
+        gap: 30px;
+        padding-bottom: 100px;
     }
 
     /* --- Mega Bold Gallery Cards --- */
     .gallery-card {
         background: white;
-        border-radius: 24px;
+        border-radius: 28px;
         overflow: hidden;
         border: 1px solid #e2e8f0;
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -68,7 +82,6 @@
         display: flex;
         flex-direction: column;
         height: 100%;
-        opacity: 1;
     }
 
     .gallery-card.hidden {
@@ -76,22 +89,23 @@
     }
 
     .gallery-card:hover {
-        transform: translateY(-12px) scale(1.02);
+        transform: translateY(-12px);
         border-color: #14b8a6;
-        box-shadow: 0 25px 50px rgba(15, 23, 42, 0.1);
+        box-shadow: 0 30px 60px rgba(15, 23, 42, 0.12);
     }
 
     .image-wrapper {
         position: relative;
-        height: 240px;
+        height: 260px;
         overflow: hidden;
+        background: #f1f5f9;
     }
 
     .gallery-img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.5s ease;
+        transition: transform 0.6s ease;
     }
 
     .gallery-card:hover .gallery-img {
@@ -99,43 +113,46 @@
     }
 
     .card-body {
-        padding: 25px;
-        background: white;
-    }
-
-    .gallery-title {
-        margin: 0;
-        font-size: 1.3rem;
-        font-weight: 900;
-        color: #0f172a;
-        letter-spacing: -0.5px;
+        padding: 30px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
     }
 
     .gallery-category {
-        font-size: 0.75rem;
-        padding: 6px 14px;
+        font-size: 0.7rem;
+        padding: 6px 12px;
         border-radius: 10px;
         background: #f0fdfa;
         color: #0d9488;
         font-weight: 900;
-        border: 2px solid #ccfbf1;
+        border: 1px solid #ccfbf1;
         text-transform: uppercase;
         display: inline-block;
-        margin-bottom: 12px;
+        margin-bottom: 15px;
+        width: fit-content;
+    }
+
+    .gallery-title {
+        margin: 0;
+        font-size: 1.4rem;
+        font-weight: 900;
+        color: #0f172a;
+        line-height: 1.2;
+        letter-spacing: -0.5px;
     }
 
     .view-prompt {
         color: #14b8a6;
         font-weight: 800;
-        font-size: 1rem;
+        font-size: 0.9rem;
         display: flex;
         align-items: center;
         gap: 8px;
         text-transform: uppercase;
         letter-spacing: 1px;
-        margin-top: 15px;
-        padding-top: 15px;
-        border-top: 1px solid #f1f5f9;
+        margin-top: auto;
+        padding-top: 20px;
     }
 
     /* --- Lightbox Popup Styling --- */
@@ -145,101 +162,69 @@
         z-index: 10000;
         inset: 0;
         background: rgba(15, 23, 42, 0.98);
+        backdrop-filter: blur(10px);
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 20px;
+        padding: 40px;
     }
 
     #lightbox-img {
         max-width: 90%;
-        max-height: 70vh;
-        border-radius: 16px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        max-height: 75vh;
+        border-radius: 20px;
+        object-fit: contain;
+        box-shadow: 0 40px 100px rgba(0,0,0,0.5);
     }
 
     .lb-controls {
-        margin-top: 25px;
+        margin-top: 30px;
         text-align: center;
         color: white;
     }
 
     .close-lb {
         position: absolute;
-        top: 25px;
-        right: 35px;
+        top: 30px;
+        right: 40px;
         color: white;
-        font-size: 3rem;
+        font-size: 2.5rem;
         cursor: pointer;
-        line-height: 1;
+        transition: 0.3s;
     }
+    .close-lb:hover { color: #14b8a6; transform: rotate(90deg); }
 
     .lb-dl-btn {
         display: inline-flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
         background: #14b8a6;
         color: white;
-        padding: 12px 30px;
+        padding: 15px 35px;
         border-radius: 50px;
         text-decoration: none;
         font-weight: 800;
-        margin-top: 15px;
+        margin-top: 20px;
         transition: 0.3s;
-    }
-
-    .lb-dl-btn:hover { background: white; color: #14b8a6; }
-
-    /* --- Mega Footer Styling --- */
-    .mega-footer {
-        background: #0f172a;
-        color: #f8fafc;
-        padding: 80px 10% 40px;
-        font-family: 'Inter', sans-serif;
-    }
-
-    .footer-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 50px;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    .footer-col h4 {
-        color: #14b8a6;
-        font-weight: 900;
         text-transform: uppercase;
-        letter-spacing: 2px;
-        margin-bottom: 25px;
-        font-size: 1.1rem;
+        letter-spacing: 1px;
     }
 
-    .footer-col p, .footer-col ul {
-        color: #94a3b8;
-        list-style: none;
-        padding: 0;
-    }
+    .lb-dl-btn:hover { background: white; color: #14b8a6; transform: scale(1.05); }
 
-    .footer-col ul li { margin-bottom: 15px; }
-    .footer-col ul li a { color: #94a3b8; text-decoration: none; transition: 0.3s; font-weight: 500; }
-    .footer-col ul li a:hover { color: #14b8a6; padding-left: 5px; }
-
-    .social-links { display: flex; gap: 15px; margin-top: 25px; }
-    .social-icon {
-        background: #1e293b; color: white; width: 40px; height: 40px; border-radius: 10px;
-        display: flex; align-items: center; justify-content: center; transition: 0.3s; text-decoration: none;
+    @media (max-width: 768px) {
+        .gallery-header h1 { font-size: 2.5rem; }
+        .gallery-grid { grid-template-columns: 1fr; }
+        #lightbox { padding: 20px; }
     }
-    .social-icon:hover { background: #14b8a6; transform: translateY(-5px); }
 </style>
-<div class="gallery-grid triple-lock-row">
-   </div>
 
 <div class="hub-container">
-    <div style="max-width: 900px; margin: 0 auto; text-align: center; margin-bottom: 60px;">
+    <div class="gallery-header">
         <span style="color: #14b8a6; font-weight: 900; letter-spacing: 3px; font-size: 0.9rem; text-transform: uppercase;">Visual Archive</span>
-        <h1 style="font-size: 3.5rem; margin-top: 15px; font-weight: 900; color: #0f172a; letter-spacing: -2px;">Ministry Gallery</h1>
-        <p style="color: #64748b; font-size: 1.2rem; max-width: 600px; margin: 20px auto; line-height: 1.6;">
+        <h1>Ministry Gallery</h1>
+        <div style="width: 60px; height: 6px; background: #14b8a6; margin: 20px auto; border-radius: 10px;"></div>
+        <p style="color: #64748b; font-size: 1.2rem; max-width: 600px; margin: 0 auto; line-height: 1.6;">
             Capturing moments of grace, community, and service within the LCM Maseno family.
         </p>
     </div>
@@ -248,7 +233,7 @@
         <input type="text" 
                id="categorySearch" 
                class="category-search-input" 
-               placeholder="Search by category (e.g. Youth, Choir, Outreach)..."
+               placeholder="Search by category (Youth, Choir, Outreach)..."
                onkeyup="filterByCategory()">
         <i class="fas fa-search search-icon"></i>
     </div>
@@ -275,42 +260,39 @@
                     {{ image.title if image.title and image.title.strip() != "" else "Ministry Highlight" }}
                 </h3>
                 
-                <div class="view-prompt">Full View <span>→</span></div>
+                <div class="view-prompt">Full View <span style="font-size: 1.2rem;">→</span></div>
             </div>
         </div>
         {% else %}
-        <div style="grid-column: 1/-1; text-align: center; padding: 100px;">
-            <p style="color: #94a3b8; font-weight: 600;">The gallery is currently being curated. Check back soon!</p>
+        <div style="grid-column: 1/-1; text-align: center; padding: 100px 0;">
+            <div style="font-size: 4rem; margin-bottom: 20px;">🖼️</div>
+            <p style="color: #94a3b8; font-weight: 600; font-size: 1.2rem;">The gallery is currently being curated. Check back soon!</p>
         </div>
         {% endfor %}
     </div>
 </div>
 
+<!-- Lightbox Modal -->
 <div id="lightbox" onclick="closeGallery(event)">
-    <span class="close-lb">&times;</span>
+    <span class="close-lb" onclick="closeGallery(event)">&times;</span>
     <img id="lightbox-img" src="">
     <div class="lb-controls">
-        <h3 id="lb-title" style="margin: 0; font-size: 1.5rem; font-weight: 900;"></h3>
+        <h3 id="lb-title" style="margin: 0; font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px;"></h3>
         <a id="lb-dl" href="#" class="lb-dl-btn">
             <i class="fas fa-download"></i> Download Photo
         </a>
     </div>
 </div>
 
-
 <script>
-    // LIVE SEARCH FILTERING LOGIC
     function filterByCategory() {
         const query = document.getElementById('categorySearch').value.toLowerCase();
         const cards = document.querySelectorAll('.gallery-card');
         
         cards.forEach(card => {
             const category = card.getAttribute('data-category');
-            
-            // If the typed query is found within the category string
             if (category.includes(query)) {
                 card.classList.remove('hidden');
-                // Optional: Fade in effect
                 card.style.opacity = "1";
             } else {
                 card.classList.add('hidden');
@@ -338,6 +320,13 @@
             document.body.style.overflow = 'auto';
         }
     }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape") {
+            document.getElementById('lightbox').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
 </script>
 
 {% endblock %}

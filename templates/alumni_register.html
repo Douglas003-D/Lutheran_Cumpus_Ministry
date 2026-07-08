@@ -2,136 +2,165 @@
 
 {% block content %}
 <style>
+    /* Section Background with a modern gradient */
     .registration-section {
-        padding: 80px 0;
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        padding: 60px 20px;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
         min-height: 85vh;
         display: flex;
         align-items: center;
+        justify-content: center;
     }
 
+    /* Form Container Polish */
     .form-container {
         background: white;
         padding: 45px;
-        border-radius: 24px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
-        max-width: 520px;
-        margin: 0 auto;
+        border-radius: 28px;
+        box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.1);
+        max-width: 550px;
         width: 100%;
-        border: 1px solid #f1f5f9;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
     }
 
-    .btn-register-extra {
-        background: linear-gradient(45deg, #0f172a, #1e293b);
-        color: white;
-        font-size: 1.1rem;
-        font-weight: 700;
-        padding: 18px; 
-        border-radius: 14px;
-        border: none;
-        width: 100%;
-        cursor: pointer;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        margin-top: 25px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .btn-register-extra:hover {
-        background: linear-gradient(45deg, #14b8a6, #0d9488);
-        transform: scale(1.02);
-        box-shadow: 0 15px 30px rgba(20, 184, 166, 0.3);
-    }
-
-    .form-group label {
-        display: block;
-        font-weight: 600;
-        color: #334155;
-        margin-bottom: 8px;
-        font-size: 0.9rem;
+    /* Floating Field Effect */
+    .form-group-custom {
+        margin-bottom: 20px;
     }
 
     .form-control-custom {
         width: 100%;
-        padding: 14px 16px;
-        border: 2px solid #e2e8f0;
-        border-radius: 12px;
+        padding: 14px 18px;
+        border: 2px solid #f1f5f9;
+        border-radius: 14px;
         font-size: 1rem;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         background: #f8fafc;
+        box-sizing: border-box;
     }
 
     .form-control-custom:focus {
         outline: none;
         border-color: #14b8a6;
         background: white;
-        box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.1);
+        box-shadow: 0 8px 20px rgba(20, 184, 166, 0.08);
+        transform: translateY(-2px);
     }
 
-    .icon-box {
+    /* Registration Button Styling */
+    .btn-alumni-submit {
         background: #0f172a;
-        width: 70px;
-        height: 70px;
-        border-radius: 20px;
+        color: white !important;
+        font-size: 1rem;
+        font-weight: 800;
+        padding: 18px;
+        border-radius: 50px; /* Pill Shape */
+        border: none;
+        width: 100%;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 30px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+
+    .btn-alumni-submit:hover {
+        background: #14b8a6;
+        transform: translateY(-3px) scale(1.01);
+        box-shadow: 0 15px 30px rgba(20, 184, 166, 0.3);
+    }
+
+    .icon-wrapper {
+        background: #0f172a;
+        width: 64px;
+        height: 64px;
+        border-radius: 18px;
         display: flex;
         align-items: center;
         justify-content: center;
         margin: 0 auto 20px;
-        transform: rotate(-5deg);
+        transform: rotate(-6deg);
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
     }
 </style>
 
 <div class="registration-section">
     <div class="form-container">
-        <div style="text-align: center; margin-bottom: 35px;">
-            <div class="icon-box">
-                <i class="fas fa-graduation-cap" style="font-size: 2rem; color: #14b8a6;"></i>
+        <!-- Header -->
+        <div style="text-align: center; margin-bottom: 40px;">
+            <div class="icon-wrapper">
+                <span style="font-size: 2rem;">🎓</span>
             </div>
-            <h2 style="color: #0f172a; font-weight: 800; margin: 0; font-size: 1.8rem; letter-spacing: -0.5px;">Alumni Registry</h2>
-            <p style="color: #64748b; margin-top: 8px;">Keep the connection alive after graduation</p>
+            <h2 style="color: #0f172a; font-weight: 900; margin: 0; font-size: 2rem; letter-spacing: -1px;">Alumni Registry</h2>
+            <p style="color: #64748b; margin-top: 8px; font-weight: 500;">Umoja Precision Scheduler Network</p>
         </div>
 
         <form action="{{ url_for('register_alumni') }}" method="POST">
-            <div class="form-group" style="margin-bottom: 18px;">
-                <label for="name"><i class="fas fa-user" style="color: #14b8a6; margin-right: 8px;"></i> Full Name</label>
-                <input type="text" id="name" name="name" class="form-control-custom" placeholder="Enter your full name" required>
+            <!-- Full Name -->
+            <div class="form-group-custom">
+                <label style="display: block; font-weight: 700; color: #334155; margin-bottom: 8px; font-size: 0.85rem; text-transform: uppercase;">
+                    Full Name
+                </label>
+                <input type="text" name="name" class="form-control-custom" placeholder="" required>
             </div>
 
-            <div class="form-group" style="margin-bottom: 18px;">
-                <label for="email"><i class="fas fa-envelope" style="color: #14b8a6; margin-right: 8px;"></i> Email Address</label>
-                <input type="email" id="email" name="email" class="form-control-custom" placeholder="e.g. name@example.com" required>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <!-- Email -->
+                <div class="form-group-custom">
+                    <label style="display: block; font-weight: 700; color: #334155; margin-bottom: 8px; font-size: 0.85rem; text-transform: uppercase;">
+                        Email
+                    </label>
+                    <input type="email" name="email" class="form-control-custom" placeholder="" required>
+                </div>
+
+                <!-- Grad Year -->
+                <div class="form-group-custom">
+                    <label style="display: block; font-weight: 700; color: #334155; margin-bottom: 8px; font-size: 0.85rem; text-transform: uppercase;">
+                        Grad Year
+                    </label>
+                    <input type="number" name="grad_year" class="form-control-custom" placeholder="" required>
+                </div>
             </div>
 
-            <div class="form-group" style="margin-bottom: 18px;">
-                <label for="grad_year"><i class="fas fa-calendar-alt" style="color: #14b8a6; margin-right: 8px;"></i> Year of Graduation</label>
-                <input type="number" id="grad_year" name="grad_year" class="form-control-custom" placeholder="e.g. 2024" required>
+            <!-- Course -->
+            <div class="form-group-custom">
+                <label style="display: block; font-weight: 700; color: #334155; margin-bottom: 8px; font-size: 0.85rem; text-transform: uppercase;">
+                    Course Studied
+                </label>
+                <input type="text" name="course" class="form-control-custom" placeholder="" required>
             </div>
 
-            <div class="form-group" style="margin-bottom: 18px;">
-                <label for="course"><i class="fas fa-book" style="color: #14b8a6; margin-right: 8px;"></i> Course Studied</label>
-                <input type="text" id="course" name="course" class="form-control-custom" placeholder="e.g. BSc. Information Technology" required>
+            <!-- Profession -->
+            <div class="form-group-custom">
+                <label style="display: block; font-weight: 700; color: #334155; margin-bottom: 8px; font-size: 0.85rem; text-transform: uppercase;">
+                    Current Profession
+                </label>
+                <input type="text" name="profession" class="form-control-custom" placeholder="">
             </div>
 
-            <div class="form-group" style="margin-bottom: 18px;">
-                <label for="profession"><i class="fas fa-briefcase" style="color: #14b8a6; margin-right: 8px;"></i> Current Profession</label>
-                <input type="text" id="profession" name="profession" class="form-control-custom" placeholder="e.g. Software Engineer">
+            <!-- Location -->
+            <div class="form-group-custom">
+                <label style="display: block; font-weight: 700; color: #334155; margin-bottom: 8px; font-size: 0.85rem; text-transform: uppercase;">
+                    Current Location
+                </label>
+                <input type="text" name="location" class="form-control-custom" placeholder="">
             </div>
 
-            <div class="form-group" style="margin-bottom: 18px;">
-                <label for="location"><i class="fas fa-map-marker-alt" style="color: #14b8a6; margin-right: 8px;"></i> Current City/Location</label>
-                <input type="text" id="location" name="location" class="form-control-custom" placeholder="e.g. Nairobi, Kenya">
-            </div>
-
-            <button type="submit" class="btn-register-extra">
-                Join Alumni Network
-                <i class="fas fa-check-circle"></i>
+            <button type="submit" class="btn-alumni-submit">
+                Join Network 🚀
             </button>
         </form>
+
+        <div style="text-align: center; margin-top: 30px; border-top: 1px solid #f1f5f9; padding-top: 20px;">
+            <a href="{{ url_for('index') }}" style="color: #64748b; text-decoration: none; font-size: 0.9rem; font-weight: 600;">
+                ← Back to Homepage
+            </a>
+        </div>
     </div>
 </div>
 {% endblock %}

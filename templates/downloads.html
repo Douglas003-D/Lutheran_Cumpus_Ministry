@@ -4,8 +4,8 @@
 <style>
     /* --- Technical Hub Theme --- */
     .hub-container {
-        padding: 80px 10%;
-        background: #f8fafc; /* Slightly lighter, cleaner background */
+        padding: 80px 5%;
+        background: #f8fafc;
         min-height: 100vh;
         font-family: 'Inter', sans-serif;
     }
@@ -19,10 +19,10 @@
 
     .search-input {
         width: 100%;
-        padding: 20px 30px;
+        padding: 18px 25px;
         padding-right: 60px;
         border-radius: 100px;
-        border: 3px solid #e2e8f0; /* Thicker border to match navbar */
+        border: 3px solid #e2e8f0;
         background: white;
         font-family: inherit;
         font-size: 1.1rem;
@@ -30,6 +30,7 @@
         outline: none;
         transition: all 0.3s ease;
         box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+        box-sizing: border-box;
     }
 
     .search-input:focus {
@@ -43,17 +44,16 @@
         max-width: 1200px;
         margin: 0 auto;
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-        gap: 35px;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 30px;
     }
 
     /* --- Mega Bold Resource Cards --- */
     .resource-card {
         background: white;
         border-radius: 24px;
-        padding: 35px;
+        padding: 30px;
         border: 1px solid #e2e8f0;
-        /* Removed top-border-only for a cleaner all-around premium look */
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -64,23 +64,23 @@
     }
 
     .resource-card:hover {
-        transform: translateY(-12px) scale(1.02);
+        transform: translateY(-10px) scale(1.01);
         border-color: #14b8a6;
-        box-shadow: 0 25px 50px rgba(15, 23, 42, 0.1);
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
     }
 
     /* --- Card Interior Elements --- */
     .icon-box {
         background: #f1f5f9; 
         color: #14b8a6; 
-        width: 70px; 
-        height: 70px; 
-        border-radius: 20px; 
+        width: 65px; 
+        height: 65px; 
+        border-radius: 18px; 
         display: flex; 
         align-items: center; 
         justify-content: center; 
-        font-size: 2rem;
-        margin-bottom: 25px;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
         transition: 0.3s ease;
     }
 
@@ -92,7 +92,7 @@
 
     .card-title {
         margin: 0; 
-        font-size: 1.4rem; /* Larger and Bolder */
+        font-size: 1.3rem;
         font-weight: 900; 
         color: #0f172a;
         line-height: 1.2;
@@ -101,7 +101,7 @@
 
     .card-meta {
         margin: 8px 0 25px; 
-        font-size: 0.95rem; 
+        font-size: 0.9rem; 
         color: #64748b;
         font-weight: 500;
     }
@@ -109,10 +109,10 @@
     .download-prompt {
         color: #14b8a6; 
         font-weight: 800; 
-        font-size: 1rem; 
+        font-size: 0.9rem; 
         display: flex; 
         align-items: center; 
-        gap: 8px;
+        gap: 6px;
         text-transform: uppercase;
         letter-spacing: 1px;
     }
@@ -122,8 +122,8 @@
         display: none; 
         position: fixed; 
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(15, 23, 42, 0.8);
-        backdrop-filter: blur(12px);
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(10px);
         z-index: 3000;
         justify-content: center; 
         align-items: center;
@@ -132,19 +132,19 @@
 
     .dl-modal-content {
         background: white;
-        color: #0f172a;
         width: 100%;
         max-width: 450px;
-        border-radius: 35px;
-        padding: 50px 40px;
+        border-radius: 32px;
+        padding: 40px;
         text-align: center;
         box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-        animation: modalEntrance 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        animation: modalEntrance 0.4s ease-out;
+        box-sizing: border-box;
     }
 
     @keyframes modalEntrance {
-        from { transform: translateY(30px) scale(0.9); opacity: 0; }
-        to { transform: translateY(0) scale(1); opacity: 1; }
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
     }
 
     .modal-dl-btn {
@@ -152,13 +152,13 @@
         background: #14b8a6;
         color: white;
         text-decoration: none;
-        padding: 20px;
-        border-radius: 18px;
+        padding: 18px;
+        border-radius: 16px;
         font-weight: 800;
-        font-size: 1.1rem;
+        font-size: 1rem;
         text-transform: uppercase;
         letter-spacing: 1px;
-        margin-top: 30px;
+        margin-top: 25px;
         transition: 0.3s;
         border: none;
         width: 100%;
@@ -167,41 +167,41 @@
 
     .modal-dl-btn:hover {
         background: #0d9488;
-        transform: scale(1.03);
-        box-shadow: 0 15px 30px rgba(20, 184, 166, 0.3);
+        transform: translateY(-2px);
     }
 
     .file-tag {
-        font-size: 0.75rem;
-        padding: 6px 14px;
-        border-radius: 10px;
+        font-size: 0.7rem;
+        padding: 5px 12px;
+        border-radius: 8px;
         background: #f0fdfa;
         color: #0d9488;
         font-weight: 900;
         border: 2px solid #ccfbf1;
-        text-transform: uppercase;
+    }
+
+    /* --- Responsive Adjustments --- */
+    @media (max-width: 768px) {
+        .hub-container { padding-top: 40px; }
+        .hub-container h1 { font-size: 2.5rem !important; }
+        #fileGrid { grid-template-columns: 1fr; }
+        .search-wrapper { margin-bottom: 40px; }
     }
 </style>
-<div class="resource-grid triple-lock-row">
-    {% for resource in resources %}
-    <div class="resource-card">
-        </div>
-    {% endfor %}
-</div>
 
 <div class="hub-container">
     
-    <div style="max-width: 900px; margin: 0 auto; text-align: center; margin-bottom: 60px;">
-        <span style="color: #14b8a6; font-weight: 900; letter-spacing: 3px; font-size: 0.9rem; text-transform: uppercase;">Portal Assets</span>
-        <h1 style="font-size: 3.5rem; margin-top: 15px; font-weight: 900; color: #0f172a; letter-spacing: -2px;">Resource Hub</h1>
-        <p style="color: #64748b; font-size: 1.2rem; max-width: 600px; margin: 20px auto; line-height: 1.6;">
+    <div style="max-width: 800px; margin: 0 auto; text-align: center; margin-bottom: 50px;">
+        <span style="color: #14b8a6; font-weight: 900; letter-spacing: 3px; font-size: 0.8rem; text-transform: uppercase;">Portal Assets</span>
+        <h1 style="font-size: 3.5rem; margin-top: 10px; font-weight: 900; color: #0f172a; letter-spacing: -2px;">Resource Hub</h1>
+        <p style="color: #64748b; font-size: 1.1rem; max-width: 600px; margin: 15px auto; line-height: 1.6;">
             Access ministry documentation and academic guides managed by the LCM system.
         </p>
     </div>
 
     <div class="search-wrapper">
-        <input type="text" id="resourceSearch" class="search-input" placeholder="Search resources by title...">
-        <span style="position: absolute; right: 25px; top: 50%; transform: translateY(-50%); font-size: 1.5rem; color: #94a3b8;">🔍</span>
+        <input type="text" id="resourceSearch" class="search-input" placeholder="Search resources...">
+        <span style="position: absolute; right: 25px; top: 50%; transform: translateY(-50%); font-size: 1.2rem; color: #94a3b8;">🔍</span>
     </div>
 
     <div id="fileGrid">
@@ -232,15 +232,16 @@
     </div>
 </div>
 
+<!-- Simple Download Modal -->
 <div id="downloadModal" class="dl-modal" onclick="closeDownloadModal()">
     <div class="dl-modal-content" onclick="event.stopPropagation()">
         <div id="modal-content-area"></div>
-        <button onclick="closeDownloadModal()" style="background: none; border: none; color: #94a3b8; margin-top: 30px; cursor: pointer; font-size: 1rem; font-weight: 700; text-decoration: underline;">Dismiss</button>
+        <button onclick="closeDownloadModal()" style="background: none; border: none; color: #94a3b8; margin-top: 25px; cursor: pointer; font-size: 0.9rem; font-weight: 700; text-decoration: underline;">Dismiss</button>
     </div>
 </div>
 
 <script>
-    // Search Functionality (Kept Original Logic)
+    // Search Logic
     document.getElementById('resourceSearch').addEventListener('input', function(e) {
         const term = e.target.value.toLowerCase();
         const cards = document.querySelectorAll('.resource-card');
@@ -255,25 +256,24 @@
         const modal = document.getElementById('downloadModal');
         const content = document.getElementById('modal-content-area');
         const extension = filename.split('.').pop().toUpperCase();
-        
         const downloadUrl = `/static/uploads/${filename}`; 
 
         content.innerHTML = `
-            <div style="background: rgba(20, 184, 166, 0.1); width: 90px; height: 90px; border-radius: 25px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 25px;">💾</div>
-            <h2 style="margin-bottom: 12px; font-size: 1.8rem; font-weight: 900; color: #0f172a; letter-spacing: -1px;">${title}</h2>
+            <div style="background: rgba(20, 184, 166, 0.1); width: 80px; height: 80px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 20px;">💾</div>
+            <h2 style="margin-bottom: 10px; font-size: 1.6rem; font-weight: 900; color: #0f172a; letter-spacing: -1px;">${title}</h2>
             
-            <p style="color: #64748b; font-size: 1rem; margin-bottom: 30px; font-weight: 500;">
-                Format: <strong style="color:#0f172a;">${extension}</strong> &nbsp;•&nbsp; Weight: <strong style="color:#0f172a;">${size}</strong>
+            <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 25px; font-weight: 500;">
+                Format: <strong style="color:#0f172a;">${extension}</strong> &nbsp;•&nbsp; Size: <strong style="color:#0f172a;">${size}</strong>
             </p>
             
-            <div style="background: #f8fafc; border-radius: 20px; padding: 20px; border: 2px solid #e2e8f0; text-align: left; margin-bottom: 15px;">
-                <p style="font-size: 0.9rem; color: #475569; margin: 0; line-height: 1.5;">
-                    <span style="color: #14b8a6; font-weight: 900;">VERIFIED:</span> This asset is cleared for campus distribution and quality checked by Joint Developers.
+            <div style="background: #f8fafc; border-radius: 16px; padding: 15px; border: 2px solid #e2e8f0; text-align: left; margin-bottom: 15px;">
+                <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.4;">
+                    <span style="color: #14b8a6; font-weight: 900;">VERIFIED:</span> Cleared for distribution by Joint Developers.
                 </p>
             </div>
-            <p style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">Uploaded on ${date}</p>
+            <p style="font-size: 0.8rem; color: #94a3b8; font-weight: 600;">Uploaded on ${date}</p>
 
-            <a href="${downloadUrl}" class="modal-dl-btn" download>Confirm & Download Now</a>
+            <a href="${downloadUrl}" class="modal-dl-btn" download>Confirm & Download</a>
         `;
 
         modal.style.display = 'flex';
@@ -291,6 +291,5 @@
         }
     }
 </script>
-
 
 {% endblock %}

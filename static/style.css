@@ -1,22 +1,32 @@
-/* --- General Reset & Global Styles --- */
-html {
-    scroll-behavior: smooth;
-}
-
-body {
+/* --- 1. THE FOUNDATION (Fluid & Reset) --- */
+* {
     margin: 0;
     padding: 0;
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    background-color: #f8fafc;
-    color: #1e293b;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+html, body {
+    width: 100%;
     overflow-x: hidden;
 }
 
-/* --- Navigation Bar --- */
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.6;
+}
+
+/* --- 2. NAVIGATION BAR (Flexible & Responsive) --- */
 .navbar {
     background: rgba(0, 0, 0, 0.95);
     backdrop-filter: blur(12px);
-    padding: 25px 8%; 
+    padding: 15px 8%; 
+    min-height: 70px; /* Use min-height instead of fixed height */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -27,165 +37,115 @@ body {
 }
 
 .logo {
-    color: #fff;
-    font-size: 32px; 
+    color: #fff !important;
+    font-size: 1.25rem; 
     font-weight: 900;
-    letter-spacing: 1.5px;
+    letter-spacing: 1px;
     text-decoration: none;
     text-transform: uppercase;
 }
 
-.menu-items {
+.nav-links {
     display: flex;
     gap: 20px; 
     align-items: center;
 }
 
-/* --- MEGA BOLD PILL BUTTONS --- */
+/* --- 3. PILL BUTTONS (Adaptive) --- */
 .pill-btn {
-    border: 3px solid rgba(255, 255, 255, 0.6);
-    color: #fff;
-    padding: 16px 36px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    color: #fff !important;
+    padding: 10px 24px;
     border-radius: 50px;
     text-decoration: none;
-    font-size: 20px;
-    font-weight: 900;
+    font-size: 14px;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.3s ease;
     display: inline-block;
-    line-height: 1;
+    text-align: center;
 }
 
 .pill-btn:hover {
     background: #fff;
-    color: #000;
-    border-color: #fff;
-    transform: scale(1.1) translateY(-3px); 
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+    color: #000 !important;
+    transform: translateY(-2px); 
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
 }
 
-/* --- Modern Marquee Animation --- */
-.marquee-bar {
-    width: 100%; 
-    background: rgba(26, 42, 108, 0.9); 
-    color: #ffffff; 
-    padding: 18px 0;
-    font-weight: 800; 
-    border-bottom: 4px solid #2ecc71; 
-    overflow: hidden; 
-    white-space: nowrap;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.marquee-content {
-    display: inline-block;
-    padding-left: 100%;
-    animation: scroll-marquee 20s linear infinite;
-}
-
-@keyframes scroll-marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
-}
-
-/* --- Forms & Containers --- */
-.form-container {
-    max-width: 550px;
-    margin: 60px auto;
-    background: #fff;
-    padding: 50px;
-    border-radius: 24px;
-    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.05);
-    border: 1px solid #e2e8f0;
-}
-
-/* --- Admin Dashboard Stats --- */
-.stat-card {
-    background: #ffffff;
-    border-top: 6px solid #14b8a6;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+/* --- 4. FLASH/ALERT MESSAGES (Standard Flow) --- */
+.alert {
+    padding: 15px;
+    margin: 10px auto;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 8px;
     text-align: center;
-    transition: transform 0.3s ease;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-/* --- THE TRIPLE LOCK SYSTEM (Gallery, Events, Downloads) --- */
-/* This section forces the 3-column row and stops it from ever stacking */
+/* --- 5. THE CONTENT GRID (Responsive Stack) --- */
 .triple-lock-row {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important; 
-    gap: 20px !important;
-    width: 100% !important;
-    overflow-x: auto; /* Allows swiping if items are large on tiny phones */
-    padding-bottom: 15px;
-    -webkit-overflow-scrolling: touch;
-}
-
-.triple-lock-row > div, 
-.triple-lock-row > article,
-.triple-lock-row > .gallery-card,
-.triple-lock-row > .event-card,
-.triple-lock-row > .resource-card {
-    flex: 0 0 calc(33.33% - 15px) !important; /* Math for exactly 3 columns */
-    min-width: 300px !important; /* Prevents them from getting too thin */
-}
-
-/* --- RESPONSIVE ADJUSTMENTS --- */
-
-@media (max-width: 1200px) {
-    .navbar { padding: 20px 4%; }
-    .pill-btn { padding: 12px 24px; font-size: 16px; }
-}
-
-@media (max-width: 768px) {
-    /* Navbar stays horizontal but spaces out */
-    .navbar {
-        flex-direction: row; 
-        justify-content: space-between;
-        padding: 15px 5%;
-    }
-
-    /* Menu links stay side-by-side */
-    .menu-items {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        gap: 10px;
-        overflow-x: auto;
-    }
-
-    .logo { font-size: 22px; }
-
-    .form-container { padding: 30px; margin: 20px; }
-    
-    /* Make sure text inside 3-column items scales down on mobile */
-    .triple-lock-row h2, .triple-lock-row h3 {
-        font-size: 1.1rem !important;
-    }
-}
-
-/* --- Tables & Grids --- */
-.admin-main-layout {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-wrap: wrap; /* Allows cards to wrap to the next line */
+    justify-content: center;
     gap: 30px;
     width: 100%;
+    padding: 40px 5%;
 }
 
-@media (min-width: 992px) {
-    .admin-main-layout {
-        grid-template-columns: 350px 1fr;
-        gap: 60px;
+.triple-lock-row > .card, 
+.triple-lock-row > div {
+    flex: 1 1 300px; /* Grow, shrink, and basis of 300px */
+    max-width: 400px;
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+/* --- 6. STANDARD RESPONSIVE BREAKPOINTS --- */
+
+/* Tablets */
+@media (max-width: 1024px) {
+    .navbar { padding: 15px 5%; }
+    .nav-links { gap: 12px; }
+    .pill-btn { padding: 8px 18px; font-size: 12px; }
+}
+
+/* Mobile Phones */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 20px;
+        text-align: center;
     }
-    .triple-lock-row { overflow-x: hidden; } /* Remove scroll on desktop */
-}
 
-.table-responsive-container {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    .nav-links {
+        margin-top: 15px;
+        flex-wrap: wrap; /* Wraps nav links if they don't fit */
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .logo {
+        font-size: 1.1rem;
+        white-space: normal; /* Allows logo to wrap if it's too long for phone */
+    }
+
+    .pill-btn {
+        width: auto; /* Buttons fit their text */
+        font-size: 11px;
+    }
+
+    .triple-lock-row {
+        flex-direction: column; /* Stacks cards vertically on mobile */
+        align-items: center;
+    }
+
+    .triple-lock-row > .card {
+        width: 100%;
+        max-width: 100%; /* Cards take full width on phone */
+    }
 }

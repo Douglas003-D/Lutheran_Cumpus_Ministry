@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
-{% block content %}
 
+{% block content %}
 <style>
     :root {
         --primary-teal: #14b8a6;
@@ -11,7 +11,7 @@
     }
 
     .contact-wrapper {
-        padding: 100px 10%;
+        padding: 80px 10%;
         background: #f8fafc;
         font-family: 'Inter', sans-serif;
     }
@@ -21,32 +21,32 @@
         max-width: 1200px;
         margin: 0 auto 30px auto;
     }
+    
     .alert {
-        padding: 15px 25px;
-        border-radius: 12px;
-        margin-bottom: 20px;
-        font-weight: 600;
+        padding: 18px 25px;
+        border-radius: 16px;
+        margin-bottom: 25px;
+        font-weight: 700;
         text-align: center;
-        animation: slideDown 0.5s ease;
+        animation: slideDown 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
     }
+    
     .alert-success { background: #ecfdf5; color: #065f46; border: 1px solid #d1fae5; }
-    .alert-warning { background: #fffbeb; color: #92400e; border: 1px solid #fef3c7; }
     .alert-danger { background: #fef2f2; color: #991b1b; border: 1px solid #fee2e2; }
 
     @keyframes slideDown {
-        from { transform: translateY(-10px); opacity: 0; }
+        from { transform: translateY(-20px); opacity: 0; }
         to { transform: translateY(0); opacity: 1; }
-    }
-
-    .contact-header {
-        text-align: center;
-        margin-bottom: 80px;
     }
 
     .contact-grid {
         display: grid;
         grid-template-columns: 1.2fr 0.8fr;
-        gap: 50px;
+        gap: 40px;
         max-width: 1200px;
         margin: 0 auto;
     }
@@ -54,13 +54,13 @@
     .form-card {
         background: white;
         padding: 50px;
-        border-radius: 30px;
+        border-radius: 32px;
         border: 1px solid var(--border-color);
-        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.03);
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.04);
     }
 
     .input-group {
-        margin-bottom: 25px;
+        margin-bottom: 24px;
     }
 
     .input-group label {
@@ -69,7 +69,7 @@
         color: var(--deep-navy);
         margin-bottom: 10px;
         text-transform: uppercase;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         letter-spacing: 1px;
     }
 
@@ -77,199 +77,186 @@
         width: 100%;
         padding: 15px 20px;
         border: 2px solid var(--border-color);
-        border-radius: 12px;
+        border-radius: 14px;
         font-family: inherit;
         font-size: 1rem;
-        transition: 0.3s;
+        transition: all 0.3s ease;
         outline: none;
+        background: #fcfdfe;
+        box-sizing: border-box;
     }
 
     .form-input:focus {
         border-color: var(--primary-teal);
+        background: white;
         box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.1);
     }
 
     .submit-btn {
-        background: var(--primary-teal);
+        background: var(--deep-navy);
         color: white;
         border: none;
-        padding: 20px 40px;
+        padding: 20px;
         border-radius: 50px;
         font-weight: 900;
         text-transform: uppercase;
         letter-spacing: 1.5px;
         cursor: pointer;
-        transition: 0.3s;
+        transition: 0.4s;
         width: 100%;
+        margin-top: 10px;
     }
 
     .submit-btn:hover {
-        background: #0d9488;
+        background: var(--primary-teal);
         transform: translateY(-3px);
         box-shadow: 0 15px 30px rgba(20, 184, 166, 0.2);
     }
 
-    .side-info {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-
     .info-card-small {
         background: white;
-        padding: 25px;
-        border-radius: 20px;
+        padding: 24px;
+        border-radius: 24px;
         border: 1px solid var(--border-color);
         display: flex;
         align-items: center;
         gap: 20px;
         text-decoration: none;
-        transition: 0.3s;
+        transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .info-card-small:hover {
         border-color: var(--primary-teal);
-        transform: translateX(10px);
+        transform: scale(1.03);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     }
 
     .mini-icon {
-        width: 55px; height: 55px;
+        width: 50px; height: 50px;
         background: rgba(20, 184, 166, 0.1);
         color: var(--primary-teal);
-        border-radius: 15px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.3rem;
-    }
-
-    .highlight-box {
-        background: var(--deep-navy);
-        padding: 40px;
-        border-radius: 24px;
-        color: white;
-        margin-top: 10px;
-    }
-
-    .value-tag {
-        display: inline-block;
-        padding: 5px 12px;
-        background: rgba(255,255,255,0.1);
-        border-radius: 6px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        margin-right: 5px;
-        margin-bottom: 10px;
-        color: var(--primary-teal);
-    }
-
-    .faq-section {
-        background: white;
-        padding: 60px;
-        border-radius: 40px;
-        border: 1px solid var(--border-color);
-        margin-top: 80px;
-    }
-
-    @media (max-width: 950px) {
-        .contact-grid { grid-template-columns: 1fr; }
+        font-size: 1.2rem;
     }
 </style>
 
+<div class="contact-wrapper">
+    <!-- Flash Messages Section -->
+    <div class="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}" id="flash-msg">
+                <span>{{ '✅' if category == 'success' else '⚠️' }}</span>
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+    </div>
 
-    <div class="contact-header">
-        <span style="color: var(--primary-teal); font-weight: 900; letter-spacing: 3px; text-transform: uppercase; font-size: 0.9rem;">Reach Out</span>
-        <h1 style="font-size: 4rem; font-weight: 900; margin-top: 15px; color: var(--deep-navy); letter-spacing: -2px;">Connect With Us</h1>
-        <p style="color: var(--soft-slate); font-size: 1.2rem; max-width: 650px; margin: 20px auto; line-height: 1.6;">
-            We are here to listen and walk with you. Whether you have questions or simply want to learn more about our ministry.
+    <div class="contact-header" style="text-align: center; margin-bottom: 60px;">
+        <span style="color: var(--primary-teal); font-weight: 900; letter-spacing: 3px; text-transform: uppercase; font-size: 0.85rem;">Reach Out</span>
+        <h1 style="font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; margin-top: 15px; color: var(--deep-navy); letter-spacing: -2px;">Connect With Us</h1>
+        <p style="color: var(--soft-slate); font-size: 1.1rem; max-width: 600px; margin: 20px auto; line-height: 1.6;">
+            We are here to listen and walk with you. Whether you have questions or want to learn more about the ministry.
         </p>
     </div>
 
     <div class="contact-grid">
+        <!-- Message Form -->
         <div class="form-card">
-            <h2 style="margin-bottom: 35px; font-weight: 900; color: var(--deep-navy); font-size: 1.8rem;">Send a Message</h2>
+            <h2 style="margin-bottom: 30px; font-weight: 900; color: var(--deep-navy); font-size: 1.6rem;">Send a Message</h2>
             
             <form action="{{ url_for('submit_contact') }}" method="POST">
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
                     <div class="input-group">
                         <label>Full Name</label>
-                        <input type="text" name="full_name" class="form-input" placeholder>
+                        <input type="text" name="full_name" class="form-input" placeholder="" required>
                     </div>
                     <div class="input-group">
                         <label>Email Address</label>
-                        <input type="email" name="email" class="form-input" placeholder>
+                        <input type="email" name="email" class="form-input" placeholder="" required>
                     </div>
                 </div>
-                <div class="form-group" style="margin-top: 20px;">
-    <label for="phone" style="display: block; font-weight: 800; font-size: 13px; text-transform: uppercase; margin-bottom: 8px;">Phone Number</label>
-    <input type="tel" id="phone" name="phone" placeholder
-           style="width: 100%; padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: 'Inter', sans-serif; box-sizing: border-box;">
-</div>
+
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <input type="tel" name="phone" class="form-input" placeholder="" required>
+                </div>
+
                 <div class="input-group">
                     <label>Inquiry Type</label>
-                    <select name="inquiry_type" class="form-input">
+                    <select name="inquiry_type" class="form-input" style="appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 15px center; background-size: 18px;">
                         <option value="General Inquiry">General Inquiry</option>
                         <option value="Spiritual Support">Spiritual Support</option>
                         <option value="Partnership/Giving">Partnership/Giving</option>
                         <option value="Membership">Membership</option>
                     </select>
                 </div>
+
                 <div class="input-group">
                     <label>Your Message</label>
-                    <textarea name="message" class="form-input" rows="6" placeholder></textarea>
+                    <textarea name="message" class="form-input" rows="5" placeholder="" required></textarea>
                 </div>
-                <button type="submit" class="submit-btn">Send Message <i class="fas fa-paper-plane" style="margin-left: 10px;"></i></button>
+
+                <button type="submit" class="submit-btn">
+                    Send Message <span style="margin-left: 10px;">🚀</span>
+                </button>
             </form>
         </div>
 
-        <div class="side-info">
+        <!-- Sidebar Info -->
+        <div class="side-info" style="display: flex; flex-direction: column; gap: 20px;">
             <div class="info-card-small">
-                <div class="mini-icon"><i class="fas fa-envelope"></i></div>
+                <div class="mini-icon">📧</div>
                 <div>
-                    <h4 style="margin: 0; color: var(--deep-navy); font-weight: 800;">Email Address</h4>
+                    <h4 style="margin: 0; color: var(--deep-navy); font-weight: 800; font-size: 0.95rem;">Email Us</h4>
                     <p style="margin: 3px 0 0; font-size: 0.9rem; color: var(--soft-slate);">hello@lcmmaseno.org</p>
                 </div>
             </div>
 
             <div class="info-card-small">
-                <div class="mini-icon"><i class="fas fa-phone-alt"></i></div>
+                <div class="mini-icon">📞</div>
                 <div>
-                    <h4 style="margin: 0; color: var(--deep-navy); font-weight: 800;">Phone Line</h4>
+                    <h4 style="margin: 0; color: var(--deep-navy); font-weight: 800; font-size: 0.95rem;">Call Support</h4>
                     <p style="margin: 3px 0 0; font-size: 0.9rem; color: var(--soft-slate);">+254 700 000 000</p>
                 </div>
             </div>
 
-            <div class="highlight-box">
-                <h3 style="font-weight: 900; margin-bottom: 15px; color: white;">Our Values</h3>
+            <div class="highlight-box" style="background: var(--deep-navy); padding: 35px; border-radius: 28px; color: white;">
+                <h3 style="font-weight: 900; margin-bottom: 15px; color: white; font-size: 1.3rem;">Our Core Values</h3>
                 <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6; margin-bottom: 20px;">
-                    LCM Maseno is built on a foundation of faith, integrity, and community service within the university.
+                    LCM Maseno is built on faith, integrity, and dedicated community service within the university.
                 </p>
-                <div class="value-tag">SPIRITUAL GROWTH</div>
-                <div class="value-tag">LEADERSHIP</div>
-                <div class="value-tag">COMMUNITY</div>
-                <div class="value-tag">EXCELLENCE</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <span class="value-tag">SPIRITUAL GROWTH</span>
+                    <span class="value-tag">LEADERSHIP</span>
+                    <span class="value-tag">COMMUNITY</span>
+                    <span class="value-tag">EXCELLENCE</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="faq-section">
-        <h2 style="margin-bottom: 50px; font-weight: 900; color: var(--deep-navy); text-align: center; font-size: 2.2rem;">Common Questions</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;">
+    <!-- FAQ Section -->
+    <div class="faq-section" style="margin-top: 80px; padding: 60px; background: white; border-radius: 32px; border: 1px solid var(--border-color);">
+        <h2 style="margin-bottom: 50px; font-weight: 900; color: var(--deep-navy); text-align: center; font-size: 2rem;">Common Questions</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px;">
             <div class="faq-item">
-                <h4 style="color: var(--deep-navy); font-weight: 800;">How do I join the fellowship?</h4>
-                <p style="color: var(--soft-slate); font-size: 0.95rem;">Attendance is open to all students. Simply join us for any of our scheduled services or fellowships.</p>
+                <h4 style="color: var(--deep-navy); font-weight: 800; margin-bottom: 10px;">How do I join?</h4>
+                <p style="color: var(--soft-slate); font-size: 0.95rem; line-height: 1.5;">Attendance is open to all students. Simply join us for any scheduled services or weekly fellowships.</p>
             </div>
             <div class="faq-item">
-                <h4 style="color: var(--deep-navy); font-weight: 800;">Are the sermons recorded?</h4>
-                <p style="color: var(--soft-slate); font-size: 0.95rem;">Yes! Digital versions of our messages are available for download in the Resources section.</p>
+                <h4 style="color: var(--deep-navy); font-weight: 800; margin-bottom: 10px;">Recorded Sermons?</h4>
+                <p style="color: var(--soft-slate); font-size: 0.95rem; line-height: 1.5;">Yes! Digital messages are available for download in our dedicated Resources section.</p>
             </div>
             <div class="faq-item">
-                <h4 style="color: var(--deep-navy); font-weight: 800;">Can I request support?</h4>
-                <p style="color: var(--soft-slate); font-size: 0.95rem;">Absolutely. Use the "Spiritual Support" option in our form to get in touch with our team.</p>
-            </div>
-            <div class="faq-item">
-                <h4 style="color: var(--deep-navy); font-weight: 800;">How can I contribute?</h4>
-                <p style="color: var(--soft-slate); font-size: 0.95rem;">You can find all contribution details on our "Giving" page, including M-Pesa options.</p>
+                <h4 style="color: var(--deep-navy); font-weight: 800; margin-bottom: 10px;">Spiritual Support?</h4>
+                <p style="color: var(--soft-slate); font-size: 0.95rem; line-height: 1.5;">Absolutely. Select "Spiritual Support" in the form above to talk with one of our team members.</p>
             </div>
         </div>
     </div>
@@ -280,12 +267,11 @@
     setTimeout(() => {
         const msg = document.getElementById('flash-msg');
         if (msg) {
-            msg.style.transition = 'opacity 0.5s ease';
+            msg.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
             msg.style.opacity = '0';
-            setTimeout(() => msg.remove(), 500);
+            msg.style.transform = 'translateY(-20px)';
+            setTimeout(() => msg.remove(), 600);
         }
     }, 5000);
 </script>
-
-
 {% endblock %}

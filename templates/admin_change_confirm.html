@@ -1,33 +1,72 @@
 {% extends "layout.html" %}
+
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="card shadow border-0" style="border-radius: 15px;">
-                <div class="card-body p-5">
-                    <h3 class="text-center fw-bold mb-4">Set New Password</h3>
-                    
-                    <form method="POST" action="{{ url_for('admin_confirm_change', token=token) }}">
-                        <div class="mb-3">
-                            <label class="form-label fw-bold small">Current Password</label>
-                            <input type="password" name="old_password" class="form-control" required style="border-radius: 8px;">
-                        </div>
-                        <hr class="my-4">
-                        <div class="mb-3">
-                            <label class="form-label fw-bold small">New Password</label>
-                            <input type="password" name="new_password" class="form-control" required style="border-radius: 8px;">
-                        </div>
-                        <div class="mb-4">
-                            <label class="form-label fw-bold small">Confirm New Password</label>
-                            <input type="password" name="confirm_password" class="form-control" required style="border-radius: 8px;">
-                        </div>
-                        <button type="submit" class="btn w-100 fw-bold py-3" style="background-color: #20c997; color: white; border-radius: 8px; text-transform: uppercase;">
-                            Update Password
-                        </button>
-                    </form>
-                </div>
+<div class="container" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px;">
+    
+    <div class="form-container" style="width: 100%; max-width: 450px; margin: 0;">
+        <div class="text-center mb-4">
+            <div style="font-size: 2.5rem; margin-bottom: 10px;">🔐</div>
+            <h2 style="font-weight: 900; letter-spacing: -1px;">Set New Password</h2>
+            <p style="color: #64748b; font-size: 0.9rem;">Please ensure your new password is secure.</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('admin_confirm_change', token=token) }}">
+            <!-- Current Password -->
+            <div class="mb-4">
+                <label class="form-label small fw-bold text-uppercase" style="letter-spacing: 1px; color: #1e293b;">
+                    Current Password
+                </label>
+                <input type="password" name="old_password" class="form-control shadow-sm" 
+                       placeholder="" required 
+                       style="border-radius: 12px; padding: 12px; border: 1px solid #e2e8f0;">
             </div>
+
+            <hr style="border-top: 1px solid #e2e8f0; margin: 30px 0;">
+
+            <!-- New Password -->
+            <div class="mb-3">
+                <label class="form-label small fw-bold text-uppercase" style="letter-spacing: 1px; color: #1e293b;">
+                    New Password
+                </label>
+                <input type="password" name="new_password" class="form-control shadow-sm" 
+                       placeholder="" required 
+                       style="border-radius: 12px; padding: 12px; border: 1px solid #e2e8f0;">
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-4">
+                <label class="form-label small fw-bold text-uppercase" style="letter-spacing: 1px; color: #1e293b;">
+                    Confirm New Password
+                </label>
+                <input type="password" name="confirm_password" class="form-control shadow-sm" 
+                       placeholder="" required 
+                       style="border-radius: 12px; padding: 12px; border: 1px solid #e2e8f0;">
+            </div>
+
+            <!-- Action Button -->
+            <div class="mt-4">
+                <button type="submit" class="pill-btn w-100" 
+                        style="background: #14b8a6; border: none; cursor: pointer; padding: 15px;">
+                    Update Password
+                </button>
+            </div>
+        </form>
+
+        <div class="text-center mt-4">
+            <a href="{{ url_for('admin_dashboard') }}" style="color: #64748b; text-decoration: none; font-size: 0.85rem; font-weight: 600;">
+                ← Cancel and return to Dashboard
+            </a>
         </div>
     </div>
+
 </div>
+
+<style>
+    /* Specific focus effect for these form inputs */
+    .form-control:focus {
+        border-color: #14b8a6 !important;
+        box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.1) !important;
+        outline: none;
+    }
+</style>
 {% endblock %}

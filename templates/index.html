@@ -25,13 +25,13 @@
     .hero-content { text-align: center; color: white; display: flex; flex-direction: column; align-items: center; width: 100%; }
     .hero-content h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); margin: 0; font-weight: 800; text-transform: uppercase; text-shadow: 3px 3px 20px rgba(0,0,0,0.7); }
 
-    /* --- 2. LOCKED BUTTONS (THE FIX) --- */
+    /* --- 2. FIXED POSITION BUTTONS (THE LOCK) --- */
     .hero-btn-row {
         display: flex !important;
-        flex-direction: row !important; /* Force side-by-side */
-        flex-wrap: nowrap !important;   /* Never drop to next line */
+        flex-direction: row !important;
+        flex-wrap: nowrap !important; /* Forces side-by-side even on tiny screens */
         justify-content: center !important;
-        gap: clamp(10px, 3vw, 20px) !important; /* Spacing shrinks on mobile */
+        gap: 20px !important; /* Fixed gap: won't change on mobile */
         width: 100%;
         margin-top: 40px;
         padding: 0 10px;
@@ -47,25 +47,27 @@
         text-transform: uppercase;
         letter-spacing: 1px;
         transition: all 0.3s ease;
-        white-space: nowrap; /* Keep text on one line */
+        white-space: nowrap;
         
-        /* This makes them shrink to fit without breaking the row */
-        padding: 14px clamp(15px, 4vw, 36px); 
-        font-size: clamp(0.75rem, 2vw, 1.1rem);
-        flex-shrink: 1; 
-        min-width: 0; 
+        /* FIXED DIMENSIONS: These will not change regardless of screen size */
+        padding: 16px 30px; 
+        font-size: 16px; 
+        width: 220px; /* Forces both buttons to be the exact same width */
+        text-align: center;
+        display: inline-block;
+        flex-shrink: 0; /* Prevents the browser from squishing the button */
     }
 
     .pill-btn-locked:hover {
         background: #fff; color: #000; transform: scale(1.05);
     }
 
-    /* --- 3. LOCKED STATS BAR (THE FIX) --- */
+    /* --- 3. FIXED STATS BAR --- */
     .stats-bar {
         background: #fff; 
         display: flex !important; 
-        flex-direction: row !important; /* Force side-by-side */
-        flex-wrap: nowrap !important;   /* Never stack */
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
         justify-content: space-around;
         padding: 30px 10px; 
         margin: -50px auto 0; 
@@ -83,7 +85,7 @@
         color: #1a2a6c; 
         margin: 0; 
         font-weight: 900;
-        font-size: clamp(1.2rem, 5vw, 2.5rem); /* Numbers shrink on mobile */
+        font-size: clamp(1.2rem, 5vw, 2.5rem);
     }
 
     .stat-item p { 
@@ -91,7 +93,7 @@
         font-weight: 700; 
         text-transform: uppercase; 
         margin: 0;
-        font-size: clamp(0.55rem, 1.5vw, 0.85rem); /* Labels shrink on mobile */
+        font-size: 0.85rem; /* Fixed size for labels */
         white-space: nowrap;
     }
 
@@ -99,6 +101,13 @@
     .section-padding { padding: 100px 10%; text-align: center; }
     .mission-tag { color: #2ecc71; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
     .section-title { color: #1a2a6c; font-size: 2.8rem; margin-top: 10px; font-weight: 800; }
+
+    /* Fix for very small screens to prevent horizontal scroll while keeping buttons locked */
+    @media (max-width: 480px) {
+        .hero-btn-row {
+            transform: scale(0.85); /* Slightly scales the whole row down to fit small phones while keeping proportions identical */
+        }
+    }
 </style>
 
 <div class="hero-section">

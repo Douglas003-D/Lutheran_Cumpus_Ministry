@@ -30,8 +30,6 @@
             z-index: 1000;
             background: rgba(255, 255, 255, 0.98); 
             backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
             padding: 15px 40px; 
             box-shadow: 0 2px 15px rgba(0,0,0,0.05);
             border-bottom: 1px solid rgba(0,0,0,0.05);
@@ -51,15 +49,13 @@
             display: flex;
             gap: 8px;           
             align-items: center;
-            margin-left: auto; 
-            margin-right: 20px;
         }
 
         .pill-btn {
             text-decoration: none;
             color: #475569; 
             background: transparent;
-            padding: 12px 22px; 
+            padding: 10px 18px; 
             font-size: 14px; 
             font-weight: 800;
             text-transform: uppercase;
@@ -78,7 +74,7 @@
             background: #1a2a6c; 
             color: white !important;
             border: none;
-            padding: 12px 25px;
+            padding: 10px 22px;
             border-radius: 50px;
             font-weight: 800;
             text-transform: uppercase;
@@ -168,88 +164,99 @@
         }
 
         .social-icon:hover {
-            background: #1877F2; /* Facebook Blue */
+            background: #1877F2; 
             transform: translateY(-3px);
         }
 
         /* Content Wrapper */
         .content-wrapper { flex: 1 0 auto; }
 
-        /* Mobile Fix */
-        @media (max-width: 1024px) {
-            .navbar { padding: 15px 20px; flex-wrap: wrap; }
-            .nav-links { order: 3; width: 100%; justify-content: center; margin-top: 15px; }
+        /* Mobile Fixes */
+        @media (max-width: 991px) {
+            .navbar { padding: 15px 20px; }
+            .nav-links { 
+                flex-direction: column; 
+                align-items: flex-start; 
+                width: 100%; 
+                padding: 20px 0;
+            }
+            .nav-actions { margin-top: 10px; width: 100%; }
             .logo { font-size: 1.1rem; }
             .footer-grid { text-align: center; }
             .footer-col h4 { margin-top: 20px; }
-            /* --- THE GLOBAL LOCK --- */
+        }
 
-/* 1. Add this class to any row you want to stay horizontal forever */
-.lock-row {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important; /* This stops stacking */
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-}
+        /* --- THE GLOBAL LOCK --- */
+        .lock-row {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
 
-/* 2. This makes the items inside that row shrink to fit */
-.shrink-item {
-    flex-shrink: 1 !important;
-    min-width: 0 !important;
-}
+        .shrink-item {
+            flex-shrink: 1 !important;
+            min-width: 0 !important;
+        }
 
-/* 3. This makes the text get smaller so it doesn't overlap */
-.lock-text {
-    font-size: clamp(0.7rem, 2vw, 1rem) !important;
-    white-space: nowrap;
-}
+        .lock-text {
+            font-size: clamp(0.7rem, 2vw, 1rem) !important;
+            white-space: nowrap;
         }
     </style>
 </head>
 <body>
 
-<nav class="navbar"> 
-    <a href="{{ url_for('index') }}" class="logo">ELCK LUTHERAN CAMPUS MINISTRY</a> 
-    
-    <div class="nav-links">
-        <a href="{{ url_for('index') }}" class="pill-btn">Home</a>
-        <a href="{{ url_for('about') }}" class="pill-btn">About Us</a>
-        <a href="{{ url_for('events') }}" class="pill-btn">Events</a>
-        <a href="{{ url_for('gallery') }}" class="pill-btn">Gallery</a>
-        <a href="{{ url_for('downloads') }}" class="pill-btn">Downloads</a>
-        <a href="{{ url_for('contacts') }}" class="pill-btn">Contacts</a>
-        <a href="{{ url_for('donate') }}" class="pill-btn">Donate</a>
-    </div>
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a href="{{ url_for('index') }}" class="logo">ELCK LUTHERAN CAMPUS MINISTRY</a> 
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="nav-actions">
-        {% if session.loggedin %}
-            <a href="{{ url_for('admin_dashboard') }}" class="pill-btn" style="border: 2px solid #f1c40f; color: #d97706;">
-                <i class="fas fa-chart-line"></i> Dashboard
-            </a>
-            <a href="{{ url_for('logout') }}" class="pill-btn" style="border: 2px solid #ef4444; color: #ef4444; margin-left: 10px;">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
-        {% else %}
-            <div class="dropdown membership-dropdown">
-                <button class="btn btn-register dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Membership <i class="fas fa-chevron-down" style="font-size: 10px; margin-left: 5px;"></i>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                        <a class="dropdown-item" href="{{ url_for('register') }}">
-                            <i class="fas fa-user-plus"></i> Student Register
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="{{ url_for('register_alumni') }}">
-                            <i class="fas fa-user-graduate"></i> Alumni Network
-                        </a>
-                    </li>
-                </ul>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="nav-links ms-auto">
+                <a href="{{ url_for('index') }}" class="pill-btn">Home</a>
+                <a href="{{ url_for('about') }}" class="pill-btn">About Us</a>
+                <a href="{{ url_for('events') }}" class="pill-btn">Events</a>
+                <a href="{{ url_for('gallery') }}" class="pill-btn">Gallery</a>
+                <a href="{{ url_for('downloads') }}" class="pill-btn">Downloads</a>
+                <a href="{{ url_for('contacts') }}" class="pill-btn">Contacts</a>
+                <a href="{{ url_for('donate') }}" class="pill-btn">Donate</a>
             </div>
-        {% endif %}
+
+            <div class="nav-actions ms-lg-3">
+                {% if session.loggedin %}
+                    <a href="{{ url_for('admin_dashboard') }}" class="pill-btn" style="border: 2px solid #f1c40f; color: #d97706;">
+                        <i class="fas fa-chart-line"></i> Dashboard
+                    </a>
+                    <a href="{{ url_for('logout') }}" class="pill-btn" style="border: 2px solid #ef4444; color: #ef4444; margin-left: 10px;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                {% else %}
+                    <div class="dropdown membership-dropdown">
+                        <button class="btn btn-register dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Membership <i class="fas fa-chevron-down" style="font-size: 10px; margin-left: 5px;"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('register') }}">
+                                    <i class="fas fa-user-plus"></i> Student Register
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('register_alumni') }}">
+                                    <i class="fas fa-user-graduate"></i> Alumni Network
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </nav>
 
@@ -273,14 +280,13 @@
             <h4>About ELCK LCM</h4>
             <p style="font-size: 0.95rem; line-height: 1.6; color: #94a3b8;">Empowering University students to live out their faith through prayer, study, and service. We are a grace-centered community open to all.</p>
             <div class="social-links">
-    <!-- Updated with your specific Facebook Page ID -->
-    <a href="https://www.facebook.com/profile.php?id=61587384960448" 
-       class="social-icon facebook" 
-       target="_blank" 
-       title="Follow us on Facebook">
-        <i class="fab fa-facebook-f"></i>
-    </a>
-</div>
+                <a href="https://www.facebook.com/profile.php?id=61587384960448" 
+                   class="social-icon facebook" 
+                   target="_blank" 
+                   title="Follow us on Facebook">
+                     <i class="fab fa-facebook-f"></i>
+                </a>
+            </div>
         </div>
         
         <div class="footer-col">

@@ -1,172 +1,130 @@
 {% extends "layout.html" %}
+
 {% block content %}
 <style>
+    /* Security Initialization Card */
     .setup-card {
-        max-width: 450px;
+        max-width: 480px;
         width: 100%;
         background: white;
         padding: 40px;
-        border-radius: 20px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        border-top: 6px solid #28a745;
-        animation: slideIn 0.5s ease-out;
+        border-radius: 24px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+        border-top: 6px solid #10b981; /* Emerlad Green for "Go" / Setup */
+        animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    @keyframes slideIn {
-        from { opacity: 0; transform: translateY(20px); }
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(30px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
-    .setup-icon-box {
-        background: rgba(40, 167, 69, 0.1);
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
+    /* Professional Alert */
+    .info-alert {
+        background: #f0fdf4;
+        border-left: 4px solid #10b981;
+        padding: 15px;
+        margin-bottom: 25px;
+        font-size: 0.85rem;
+        color: #065f46;
+        border-radius: 8px;
         display: flex;
         align-items: center;
-        justify-content: center;
-        margin: 0 auto 20px;
-    }
-
-    .form-label {
-        font-weight: 600;
-        color: #475569;
-        display: block;
-        margin-bottom: 8px;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 14px;
-        border-radius: 10px;
-        border: 1px solid #e2e8f0;
-        font-size: 1rem;
-        transition: all 0.3s ease;
+        gap: 12px;
     }
 
     .form-control:focus {
-        border-color: #28a745;
-        outline: none;
-        box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.1);
+        border-color: #10b981 !important;
+        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1) !important;
+        background: #fff !important;
     }
 
-    .btn-setup {
-        width: 100%;
-        background: #28a745;
-        color: white;
-        padding: 18px;
-        font-size: 1.15rem;
-        font-weight: 700;
-        border-radius: 12px;
-        border: none;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin-top: 10px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        box-shadow: 0 10px 15px -3px rgba(40, 167, 69, 0.3);
-    }
-
-    .btn-setup:hover {
-        background: #218838;
-        transform: translateY(-3px);
-        box-shadow: 0 20px 25px -5px rgba(40, 167, 69, 0.4);
-    }
-
-    .info-alert {
-        background: #f0fdf4;
-        border-left: 4px solid #22c55e;
-        padding: 12px;
-        margin-bottom: 25px;
-        font-size: 0.85rem;
-        color: #166534;
-        border-radius: 4px;
-    }
-
-    .token-label {
-        color: #1e293b;
-        font-weight: 700;
-    }
-
-    .password-hint {
-        font-size: 0.75rem;
-        color: #64748b;
-        margin-top: 6px;
-        line-height: 1.4;
+    /* The Master Token field styling */
+    .token-input-wrapper {
+        padding: 20px;
+        background: #f8fafc;
+        border-radius: 16px;
+        border: 1px dashed #cbd5e1;
+        margin-bottom: 20px;
     }
 </style>
 
-<div style="min-height: 90vh; display: flex; align-items: center; justify-content: center; background: #f1f5f9; padding: 20px;">
+<div style="min-height: 90vh; display: flex; align-items: center; justify-content: center; background: #f1f5f9; padding: 40px 20px;">
     <div class="setup-card">
-        <div style="text-align: center; margin-bottom: 30px;">
-            <div class="setup-icon-box">
-                <i class="fas fa-user-shield" style="font-size: 2.5rem; color: #28a745;"></i>
+        
+        <!-- Header -->
+        <div style="text-align: center; margin-bottom: 35px;">
+            <div style="background: rgba(16, 185, 129, 0.1); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                <span style="font-size: 2.5rem;">🛡️</span>
             </div>
-            <h2 style="color: #0f172a; font-weight: 800; margin: 0; font-size: 1.75rem;">Admin Initialization</h2>
-            <p style="color: #64748b; margin-top: 10px; font-size: 0.95rem;">No admin detected. Configure account and verify with your setup token.</p>
+            <h2 style="color: #0f172a; font-weight: 900; letter-spacing: -1.5px; margin: 0; font-size: 1.8rem;">System Initialization</h2>
+            <p style="color: #64748b; margin-top: 8px; font-weight: 500;">Create the master administrator account.</p>
         </div>
 
+        <!-- System Alerts -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert" style="margin-bottom: 20px; padding: 15px; border-radius: 10px;">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <div style="padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: 600; font-size: 0.9rem; text-align: center;
+                        {% if category == 'danger' %} background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca;
+                        {% else %} background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; {% endif %}">
+                        {{ '⚠️' if category == 'danger' else '✅' }} {{ message }}
                     </div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
 
         <div class="info-alert">
-            <i class="fas fa-info-circle"></i> <strong>Note:</strong> This page is only accessible when the system has no administrators.
+            <span>ℹ️</span>
+            <strong>Security Notice:</strong> This setup portal is active because no admin accounts were found in the database.
         </div>
 
         <form action="{{ url_for('admin_setup') }}" method="POST">
-            <div style="margin-bottom: 15px;">
-                <label class="form-label">Username</label>
-                <input type="text" name="username" class="form-control" autocomplete="off" required>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="font-weight: 700; color: #1e293b; display: block; margin-bottom: 8px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">Username</label>
+                <input type="text" name="username" class="form-control" placeholder="" required
+                       style="width: 100%; border-radius: 12px; padding: 14px; border: 1px solid #e2e8f0; box-sizing: border-box;">
             </div>
 
-            <div style="margin-bottom: 15px;">
-                <label class="form-label">Email Address</label>
-                <input type="email" name="email" class="form-control" autocomplete="off" required>
+            <div style="margin-bottom: 20px;">
+                <label style="font-weight: 700; color: #1e293b; display: block; margin-bottom: 8px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">Email Address</label>
+                <input type="email" name="email" class="form-control" placeholder="" required
+                       style="width: 100%; border-radius: 12px; padding: 14px; border: 1px solid #e2e8f0; box-sizing: border-box;">
             </div>
 
-           <div style="margin-bottom: 15px; padding: 15px; background: #f8fafc; border-radius: 10px; border: 1px dashed #cbd5e1;">
-                <label class="form-label token-label"><i class="fas fa-key text-warning"></i> Secret Setup Token</label>
-                <input type="password" 
-                       name="setup_token" 
-                       class="form-control" 
-                       autocomplete="one-time-code" 
-                       placeholder="Enter master token"
-                       required>
+            <!-- Master Token -->
+            <div class="token-input-wrapper">
+                <label style="font-weight: 800; color: #0f172a; display: block; margin-bottom: 10px; font-size: 0.85rem; text-transform: uppercase;">
+                    🔑 Secret Setup Token
+                </label>
+                <input type="password" name="setup_token" class="form-control" placeholder="" required
+                       style="width: 100%; border-radius: 10px; padding: 12px; border: 1px solid #cbd5e1; box-sizing: border-box;">
             </div>
 
-            <div style="margin-bottom: 15px;">
-                <label class="form-label">Password</label>
-                <input type="password" 
-                       name="password" 
-                       class="form-control" 
-                       required 
+            <div style="margin-bottom: 20px;">
+                <label style="font-weight: 700; color: #1e293b; display: block; margin-bottom: 8px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">Password</label>
+                <input type="password" name="password" class="form-control" required 
+                       placeholder=""
                        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}"
-                       title="Must contain at least 8 characters, including uppercase, lowercase, number, and symbol.">
-                <div class="password-hint">
-                    <i class="fas fa-shield-alt"></i> Use 8+ characters with uppercase, numbers, and symbols.
-                </div>
+                       style="width: 100%; border-radius: 12px; padding: 14px; border: 1px solid #e2e8f0; box-sizing: border-box;">
+                <p style="font-size: 0.75rem; color: #64748b; margin-top: 8px; line-height: 1.4;">
+                    🔒 Must be 8+ characters with uppercase, numbers, and symbols.
+                </p>
             </div>
 
-            <div style="margin-bottom: 25px;">
-                <label class="form-label">Confirm Password</label>
-                <input type="password" name="confirm_password" class="form-control" required>
+            <div style="margin-bottom: 30px;">
+                <label style="font-weight: 700; color: #1e293b; display: block; margin-bottom: 8px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">Confirm Password</label>
+                <input type="password" name="confirm_password" class="form-control" placeholder="" required
+                       style="width: 100%; border-radius: 12px; padding: 14px; border: 1px solid #e2e8f0; box-sizing: border-box;">
             </div>
 
-            <button type="submit" class="btn-setup">
-                Initialize System
+            <button type="submit" class="pill-btn w-100" 
+                    style="background: #10b981; border: none; padding: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
+                Initialize System 🚀
             </button>
         </form>
 
-        <div style="text-align: center; margin-top: 25px; border-top: 1px solid #f1f5f9; padding-top: 20px;">
-        </div>
     </div>
 </div>
 {% endblock %}

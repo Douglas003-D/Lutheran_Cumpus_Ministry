@@ -2,125 +2,188 @@
 
 {% block content %}
 <style>
+    /* --- Registration Hub Theme --- */
     .registration-section {
-        padding: 60px 0;
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        min-height: 85vh;
-        display: flex;
-        align-items: center;
-    }
-
-    .form-container {
-        background: white;
-        padding: 45px;
-        border-radius: 24px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
-        max-width: 520px;
-        margin: 0 auto;
-        width: 100%;
-        border: 1px solid #f1f5f9;
-    }
-
-    /* THE ENLARGED COLORED BUTTON */
-    .btn-register-extra {
-        background: linear-gradient(45deg, #0f172a, #1e293b); /* Sleek Navy Gradient */
-        color: white;
-        font-size: 1.2rem;
-        font-weight: 700;
-        padding: 20px; 
-        border-radius: 14px;
-        border: none;
-        width: 100%;
-        cursor: pointer;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
+        padding: 80px 5%;
+        background: #f8fafc; /* Matching consistent hub background */
+        min-height: 90vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 12px;
-        margin-top: 25px;
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* --- Form Container: Locked & Elevated --- */
+    .form-container {
+        background: white;
+        padding: 50px;
+        border-radius: 32px;
+        box-shadow: 0 25px 60px rgba(15, 23, 42, 0.08);
+        max-width: 550px;
+        width: 100%;
+        border: 1px solid #e2e8f0;
+        position: relative;
+    }
+
+    /* --- Iconic Header Section --- */
+    .form-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .icon-box {
+        background: #14b8a6;
+        width: 80px;
+        height: 80px;
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 25px;
+        transform: rotate(-6deg);
+        box-shadow: 0 10px 20px rgba(20, 184, 166, 0.2);
+    }
+
+    .form-header h2 {
+        color: #0f172a;
+        font-weight: 900;
+        margin: 0;
+        font-size: 2.2rem;
+        letter-spacing: -1.5px;
+    }
+
+    .form-header p {
+        color: #64748b;
+        margin-top: 10px;
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+
+    /* --- Input Field Styling --- */
+    .form-group {
+        margin-bottom: 22px;
+    }
+
+    .form-group label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 10px;
+        font-size: 0.85rem;
         text-transform: uppercase;
         letter-spacing: 1px;
     }
 
-    .btn-register-extra:hover {
-        background: linear-gradient(45deg, #14b8a6, #0d9488); /* Switches to Teal on Hover */
-        transform: scale(1.02);
-        box-shadow: 0 15px 30px rgba(20, 184, 166, 0.3);
-    }
-
-    .form-group label {
-        display: block;
-        font-weight: 600;
-        color: #334155;
-        margin-bottom: 8px;
-        font-size: 0.95rem;
-    }
-
     .form-control-custom {
         width: 100%;
-        padding: 14px 16px;
+        padding: 16px 20px;
         border: 2px solid #e2e8f0;
-        border-radius: 12px;
+        border-radius: 16px;
         font-size: 1rem;
+        font-weight: 600;
+        color: #0f172a;
         transition: all 0.3s ease;
-        background: #f8fafc;
+        background: #f1f5f9;
     }
 
     .form-control-custom:focus {
         outline: none;
         border-color: #14b8a6;
         background: white;
-        box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.1);
+        box-shadow: 0 0 0 5px rgba(20, 184, 166, 0.1);
     }
 
-    .icon-box {
-        background: #14b8a6;
-        width: 70px;
-        height: 70px;
-        border-radius: 20px;
+    .form-control-custom::placeholder {
+        color: #94a3b8;
+    }
+
+    /* --- The Enlarged Technical Button --- */
+    .btn-register-extra {
+        background: #0f172a; /* Solid Navy to start */
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 900;
+        padding: 22px; 
+        border-radius: 18px;
+        border: none;
+        width: 100%;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 20px;
-        transform: rotate(-5deg);
+        gap: 12px;
+        margin-top: 35px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        box-shadow: 0 15px 30px rgba(15, 23, 42, 0.2);
+    }
+
+    .btn-register-extra:hover {
+        background: #14b8a6; /* Shifts to Teal on hover */
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(20, 184, 166, 0.3);
+    }
+
+    @media (max-width: 600px) {
+        .form-container {
+            padding: 30px 20px;
+            border-radius: 24px;
+        }
+        .form-header h2 { font-size: 1.8rem; }
     }
 </style>
 
 <div class="registration-section">
     <div class="form-container">
-        <div style="text-align: center; margin-bottom: 35px;">
+        <!-- Header -->
+        <div class="form-header">
             <div class="icon-box">
-                <i class="fas fa-user-graduate" style="font-size: 2rem; color: white;"></i>
+                <i class="fas fa-user-plus" style="font-size: 2.2rem; color: white;"></i>
             </div>
-            <h2 style="color: #0f172a; font-weight: 800; margin: 0; font-size: 2rem; letter-spacing: -0.5px;">Join the Ministry</h2>
-            <p style="color: #64748b; margin-top: 8px;">Fill in your details to get started</p>
+            <h2>Join the Ministry</h2>
+            <p>Connect with the LCM Maseno family today.</p>
         </div>
 
+        <!-- Form Body -->
         <form action="{{ url_for('register') }}" method="POST">
-            <div class="form-group" style="margin-bottom: 18px;">
-                <label for="name"><i class="fas fa-id-card" style="color: #14b8a6; margin-right: 8px;"></i> Full Name</label>
-                <input type="text" id="name" name="name" class="form-control-custom" placeholder>
+            <div class="form-group">
+                <label for="name">
+                    <i class="fas fa-id-card" style="color: #14b8a6;"></i> 
+                    Full Name
+                </label>
+                <input type="text" id="name" name="name" class="form-control-custom" placeholder="" required>
             </div>
 
-            <div class="form-group" style="margin-bottom: 18px;">
-                <label for="email"><i class="fas fa-envelope" style="color: #14b8a6; margin-right: 8px;"></i> Email Address</label>
-                <input type="email" id="email" name="email" class="form-control-custom" placeholder>
+            <div class="form-group">
+                <label for="email">
+                    <i class="fas fa-envelope" style="color: #14b8a6;"></i> 
+                    Email Address
+                </label>
+                <input type="email" id="email" name="email" class="form-control-custom" placeholder="" required>
             </div>
 
-            <div class="form-group" style="margin-bottom: 18px;">
-                <label for="phone"><i class="fas fa-phone" style="color: #14b8a6; margin-right: 8px;"></i> Phone Number</label>
-                <input type="tel" id="phone" name="phone" class="form-control-custom" placeholder>
+            <div class="form-group">
+                <label for="phone">
+                    <i class="fas fa-phone" style="color: #14b8a6;"></i> 
+                    Phone Number
+                </label>
+                <input type="tel" id="phone" name="phone" class="form-control-custom" placeholder="" required>
             </div>
 
-            <div class="form-group" style="margin-bottom: 18px;">
-                <label for="campus"><i class="fas fa-university" style="color: #14b8a6; margin-right: 8px;"></i> School / Campus</label>
-                <input type="text" id="campus" name="campus" class="form-control-custom" placeholder>
+            <div class="form-group">
+                <label for="campus">
+                    <i class="fas fa-university" style="color: #14b8a6;"></i> 
+                    Campus / University
+                </label>
+                <input type="text" id="campus" name="campus" class="form-control-custom" placeholder="" required>
             </div>
 
             <button type="submit" class="btn-register-extra">
                 Complete Registration
-                <i class="fas fa-paper-plane"></i>
+                <i class="fas fa-chevron-right"></i>
             </button>
         </form>
     </div>

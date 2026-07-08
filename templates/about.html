@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
-{% block content %}
 
+{% block content %}
 <style>
     :root {
         --lcm-teal: #14b8a6;
@@ -9,7 +9,7 @@
     }
 
     .about-wrapper {
-        padding: 80px 10%;
+        padding: 60px 8%; /* Balanced padding for better mobile fit */
         background: #ffffff;
         font-family: 'Inter', sans-serif;
         color: var(--campus-navy);
@@ -18,7 +18,7 @@
     /* Hero Branding */
     .campus-hero {
         text-align: center;
-        margin-bottom: 100px;
+        margin-bottom: 80px;
     }
 
     .tagline {
@@ -30,27 +30,28 @@
     }
 
     .main-heading {
-        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-size: clamp(2.2rem, 5vw, 4rem);
         font-weight: 900;
         margin-top: 15px;
         line-height: 1.1;
         letter-spacing: -2px;
     }
 
-    /* The "Four Pillars" of Campus Life */
+    /* The "Four Pillars" - Responsive Grid */
     .pillar-container {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 30px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 25px;
         margin-bottom: 80px;
     }
 
     .pillar-box {
-        padding: 40px;
+        padding: 35px;
         border-radius: 24px;
         background: #f8fafc;
         border: 1px solid #e2e8f0;
         transition: all 0.3s ease;
+        box-sizing: border-box; /* Global lock for button/box sizing */
     }
 
     .pillar-box:hover {
@@ -70,13 +71,15 @@
     .story-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 80px;
+        gap: 60px;
         align-items: center;
-        margin-top: 100px;
+        margin-top: 80px;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 992px) {
+        .about-wrapper { padding: 40px 5%; }
         .story-grid { grid-template-columns: 1fr; gap: 40px; }
+        .campus-hero { margin-bottom: 50px; }
     }
 
     .story-content h2 {
@@ -86,7 +89,7 @@
     }
 
     .story-content p {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         color: var(--slate-text);
         margin-bottom: 20px;
         line-height: 1.8;
@@ -107,36 +110,38 @@
     <div class="campus-hero">
         <span class="tagline">Lutheran Campus Ministry (LCM)</span>
         <h1 class="main-heading">A Spiritual Home <br>in the Heart of the Campus.</h1>
-        <div style="max-width: 700px; margin: 30px auto;">
-            <p style="font-size: 1.25rem; color: var(--slate-text);">
+        <div style="max-width: 750px; margin: 30px auto;">
+            <p style="font-size: 1.2rem; color: var(--slate-text);">
                 We exist to walk alongside students as they navigate the complexities of university life, providing a foundation of faith, fellowship, and purpose.
             </p>
         </div>
     </div>
 
+    <!-- Pillars Section -->
     <div class="pillar-container">
         <div class="pillar-box">
             <span class="pillar-icon">🙌</span>
-            <h3 style="font-weight: 800;">Worship & Word</h3>
+            <h3 style="font-weight: 800; font-size: 1.25rem;">Worship & Word</h3>
             <p style="color: var(--slate-text); font-size: 0.95rem;">Experience Christ-centered worship that speaks to the modern student's journey and academic mind.</p>
         </div>
         <div class="pillar-box">
             <span class="pillar-icon">🤝</span>
-            <h3 style="font-weight: 800;">Fellowship</h3>
+            <h3 style="font-weight: 800; font-size: 1.25rem;">Fellowship</h3>
             <p style="color: var(--slate-text); font-size: 0.95rem;">Building lifelong bonds through small groups, choir rehearsals, and shared campus experiences.</p>
         </div>
         <div class="pillar-box">
             <span class="pillar-icon">🕯️</span>
-            <h3 style="font-weight: 800;">Discipleship</h3>
+            <h3 style="font-weight: 800; font-size: 1.25rem;">Discipleship</h3>
             <p style="color: var(--slate-text); font-size: 0.95rem;">Equipping the next generation of leaders with a deep-rooted spiritual identity and moral clarity.</p>
         </div>
         <div class="pillar-box">
             <span class="pillar-icon">🌍</span>
-            <h3 style="font-weight: 800;">Service</h3>
+            <h3 style="font-weight: 800; font-size: 1.25rem;">Service</h3>
             <p style="color: var(--slate-text); font-size: 0.95rem;">Extending our hands beyond the gates through community outreach and charitable missions.</p>
         </div>
     </div>
 
+    <!-- Story Grid -->
     <div class="story-grid">
         <div class="story-content">
             <div class="lcm-accent-bar"></div>
@@ -147,37 +152,41 @@
             <p>
                 Whether you are a first-year student finding your footing or a finalist preparing for the world of work, our ministry is a place where you belong. We are more than just a club; we are a family.
             </p>
-            <div style="background: rgba(20, 184, 166, 0.05); padding: 25px; border-radius: 16px; border-left: 4px solid var(--lcm-teal);">
-                <em style="color: var(--campus-navy); font-weight: 600;">"Let no one despise your youth, but be an example to the believers in word, in conduct, in love, in spirit, in faith, in purity." — 1 Timothy 4:12</em>
+            <div style="background: rgba(20, 184, 166, 0.05); padding: 25px; border-radius: 16px; border-left: 4px solid var(--lcm-teal); margin-top: 30px;">
+                <em style="color: var(--campus-navy); font-weight: 600; display: block;">"Let no one despise your youth, but be an example to the believers in word, in conduct, in love, in spirit, in faith, in purity."</em>
+                <span style="display: block; margin-top: 10px; color: var(--lcm-teal); font-weight: 700;">— 1 Timothy 4:12</span>
             </div>
         </div>
 
-        <div style="background: var(--campus-navy); color: white; padding: 60px; border-radius: 40px; position: relative; overflow: hidden;">
+        <div style="background: var(--campus-navy); color: white; padding: 50px; border-radius: 40px; position: relative; overflow: hidden;">
             <h3 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 20px;">Digital Connection</h3>
             <p style="color: #94a3b8; line-height: 1.7; margin-bottom: 30px;">
                 Our platform is designed to keep the ministry connected across all campuses. Access academic resources, stay updated on event schedules, and support the ministry from anywhere.
             </p>
             <ul style="list-style: none; padding: 0;">
                 <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
-                    <span style="color: var(--lcm-teal);">✔</span> Centralized Event Hub
+                    <span style="color: var(--lcm-teal); font-weight: bold;">✔</span> Centralized Event Hub
                 </li>
                 <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
-                    <span style="color: var(--lcm-teal);">✔</span> Academic & Ministry Downloads
+                    <span style="color: var(--lcm-teal); font-weight: bold;">✔</span> Academic & Ministry Downloads
                 </li>
                 <li style="margin-bottom: 0; display: flex; align-items: center; gap: 10px;">
-                    <span style="color: var(--lcm-teal);">✔</span> Secure Digital Giving
+                    <span style="color: var(--lcm-teal); font-weight: bold;">✔</span> Secure Digital Giving
                 </li>
             </ul>
-            <div style="position: absolute; right: -20px; bottom: -20px; font-size: 10rem; opacity: 0.05;">⛪</div>
+            <!-- Decorative Icon -->
+            <div style="position: absolute; right: -20px; bottom: -20px; font-size: 8rem; opacity: 0.07; pointer-events: none;">⛪</div>
         </div>
     </div>
 
+    <!-- Call to Action -->
     <div style="margin-top: 100px; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 60px;">
         <h2 style="font-weight: 900; margin-bottom: 15px;">Ready to join our fellowship?</h2>
         <p style="color: var(--slate-text); margin-bottom: 30px;">Check out our upcoming events or visit us during our weekly sessions.</p>
-        <a href="{{ url_for('events') }}" style="background: var(--lcm-teal); color: white; padding: 16px 40px; border-radius: 100px; text-decoration: none; font-weight: 700; display: inline-block;">View Upcoming Events</a>
+        <a href="{{ url_for('events') }}" class="pill-btn" style="background: var(--lcm-teal); border: none; padding: 16px 40px; font-size: 16px;">
+            View Upcoming Events
+        </a>
     </div>
 
 </div>
-
 {% endblock %}
